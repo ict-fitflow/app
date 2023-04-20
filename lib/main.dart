@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('FitFlow'),
-            Text('Device not connected')
+            Text('Device info')
           ],
         ),
       ),
