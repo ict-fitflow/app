@@ -23,28 +23,29 @@ class _PourTabState extends State<PourTab> {
     final List gramsList = List<int>.generate(100, (i) => i + 1);
 
     mypicker = Picker(
-        selecteds: [20, 0],
-        adapter: PickerDataAdapter<String>(
-            pickerData: [
-              gramsList,
-              Ingredients
-            ],
-            isArray: true
-        ),
-        hideHeader: true,
-        delimiter: [
-          PickerDelimiter(
-              child: Container(
-                width: 30.0,
-                alignment: Alignment.center,
-                child: Icon(Icons.more_vert),
-              ))
-        ],
-        title: const Text("Please Select"),
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        onSelect: (Picker picker, int c, List value) {
-          // TODO: do something
-        }
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      selecteds: [20, 0],
+      adapter: PickerDataAdapter<String>(
+          pickerData: [
+            gramsList,
+            Ingredients
+          ],
+          isArray: true
+      ),
+      hideHeader: true,
+      // delimiter: [
+      //   PickerDelimiter(
+      //       child: Container(
+      //         width: 30.0,
+      //         alignment: Alignment.center,
+      //         child: Icon(Icons.more_vert),
+      //       ))
+      // ],
+      title: const Text("Please Select"),
+      selectedTextStyle: TextStyle(color: Colors.blue),
+      onSelect: (Picker picker, int c, List value) {
+        // TODO: do something
+      }
     );
     mypicker.selecteds = current.getConfig();
 
@@ -62,7 +63,7 @@ class _PourTabState extends State<PourTab> {
                 const Text("Most used"),
                 TextButton(
                   onPressed: manageTimer,
-                  child: const Text("Add")
+                  child: const Text("Manage")
                 )
               ],
             ),
