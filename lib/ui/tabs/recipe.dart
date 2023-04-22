@@ -1,3 +1,4 @@
+import 'package:fitflow/ui/pages/recipe.dart';
 import 'package:flutter/material.dart';
 
 class RecipeTab extends StatelessWidget {
@@ -21,57 +22,49 @@ class RecipePageStfull extends StatefulWidget {
 }
 
 class _RecipePageStfullState extends State<RecipePageStfull> {
-  int _index = 0;
-
   @override
   Widget build(BuildContext context) {
-    return Stepper(
-      controlsBuilder: (BuildContext context, ControlsDetails details) {
-        return Row(
-          children: <Widget>[
-            TextButton(
-              onPressed: details.onStepContinue,
-              child: const Text('NEXT'),
+    return ListView.builder(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () => open_recipe_page(),
+          child: Card(
+            child: SizedBox(
+              width: 300,
+              height: 100,
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Center(
+                          child: Text(
+                            'Recipe name',
+                            style: Theme.of(context).textTheme.displaySmall
+                          )
+                      )
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Facile'),
+                        Text('5 min')
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            TextButton(
-              onPressed: details.onStepCancel,
-              child: const Text('CANCEL'),
-            ),
-          ],
+          ),
         );
-      },
-      currentStep: _index,
-      onStepCancel: () {
-        if (_index > 0) {
-          setState(() {
-            _index -= 1;
-          });
-        }
-      },
-      onStepContinue: () {
-        if (_index <= 0) {
-          setState(() {
-            _index += 1;
-          });
-        }
-      },
-      onStepTapped: (int index) {
-        setState(() {
-          // _index = index;
-        });
-      },
-      steps: <Step>[
-        Step(
-          title: const Text('Step 1 title'),
-          content: Container(
-              alignment: Alignment.centerLeft,
-              child: const Text('Content for Step 1')),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-      ],
+      }
+    );
+  }
+
+  void open_recipe_page() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => RecipePage())
     );
   }
 }
