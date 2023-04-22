@@ -5,11 +5,11 @@ import 'package:fitflow/ui/tabs/stats.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const FitFlowApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FitFlowApp extends StatelessWidget {
+  const FitFlowApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +17,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FitFlow',
       theme: ThemeData.light(),
-      home: const MyHomePage(),
+      home: const TabsPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class TabsPage extends StatefulWidget {
+  const TabsPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<TabsPage> createState() => _TabsPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _TabsPageState extends State<TabsPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -65,12 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.balance),
             label: 'Pour',
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.apps),
             label: 'Recipe',
             backgroundColor: Colors.green,
           ),

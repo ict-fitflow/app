@@ -1,7 +1,7 @@
 import 'package:fitflow/ui/pages/manage_timer.dart';
 import 'package:fitflow/ui/pages/pouring.dart';
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 class PourTab extends StatefulWidget {
   const PourTab({Key? key}) : super(key: key);
@@ -12,23 +12,48 @@ class PourTab extends StatefulWidget {
 
 class _PourTabState extends State<PourTab> {
   int _currentValue = 50;
+  late Picker mypicker;
 
   @override
   Widget build(BuildContext context) {
+
+    final List productList = ["Oil", "Milk"];
+    final List gramsList = List<int>.generate(100, (i) => i + 1);
+
+    mypicker = Picker(
+        selecteds: [20, 0],
+        adapter: PickerDataAdapter<String>(
+            pickerData: [
+              gramsList,
+              productList
+            ],
+            isArray: true
+        ),
+        hideHeader: true,
+        delimiter: [
+          PickerDelimiter(
+              child: Container(
+                width: 30.0,
+                alignment: Alignment.center,
+                child: Icon(Icons.more_vert),
+              ))
+        ],
+        title: const Text("Please Select"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onSelect: (Picker picker, int c, List value) {
+          print(picker.getSelectedValues());
+        }
+    );
+    mypicker.selecteds = [20, 0];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Column(
           children: [
-            NumberPicker(
-              value: _currentValue,
-              minValue: 0,
-              maxValue: 100,
-              onChanged: (value) => setState(() => _currentValue = value),
-              itemWidth: double.infinity,
-            ),
-            const Divider(),
+            mypicker.makePicker(),
+            // const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,65 +64,32 @@ class _PourTabState extends State<PourTab> {
                 )
               ],
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => changeValue(10),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Olio"),
-                    Text("10")
-                  ],
-                ),
-              ),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => changeValue(20),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Farina"),
-                    Text("20")
-                  ],
-                ),
-              ),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => changeValue(50),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Vino"),
-                    Text("50")
-                  ],
-                ),
-              ),
-            ),
+            // ListView.builder(
+            //
+            //   shrinkWrap: true,
+            //   itemBuilder: (context, index) {
+            //     return SizedBox(
+            //       width: double.infinity,
+            //       child: ElevatedButton(
+            //         onPressed: () => changeValue(10),
+            //         style: ElevatedButton.styleFrom(
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //           padding: const EdgeInsets.all(20),
+            //         ),
+            //         child: const Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text("Olio"),
+            //             Text("10")
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //     // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+            //   }
+            // ),
           ],
         ),
         SizedBox(
@@ -130,8 +122,9 @@ class _PourTabState extends State<PourTab> {
     );
   }
 
-  void startPouring() {Navigator.of(context).push(
+  void startPouring() {
+    Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => const PouringPage())
-  );
+    );
   }
 }
