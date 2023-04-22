@@ -32,7 +32,7 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
           child: Card(
             child: SizedBox(
               width: 300,
-              height: 100,
+              height: 150,
               child: Column(
                 children: [
                   Expanded(

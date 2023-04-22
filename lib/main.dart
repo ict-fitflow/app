@@ -1,5 +1,5 @@
 import 'package:fitflow/ui/tabs/pour.dart';
-import 'package:fitflow/ui/tabs/recipe.dart';
+import 'package:fitflow/ui/tabs/recipies.dart';
 import 'package:fitflow/ui/tabs/settings.dart';
 import 'package:fitflow/ui/tabs/stats.dart';
 import 'package:flutter/material.dart';

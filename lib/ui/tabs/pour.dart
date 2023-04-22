@@ -64,32 +64,35 @@ class _PourTabState extends State<PourTab> {
                 )
               ],
             ),
-            // ListView.builder(
-            //
-            //   shrinkWrap: true,
-            //   itemBuilder: (context, index) {
-            //     return SizedBox(
-            //       width: double.infinity,
-            //       child: ElevatedButton(
-            //         onPressed: () => changeValue(10),
-            //         style: ElevatedButton.styleFrom(
-            //           shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(10),
-            //           ),
-            //           padding: const EdgeInsets.all(20),
-            //         ),
-            //         child: const Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Text("Olio"),
-            //             Text("10")
-            //           ],
-            //         ),
-            //       ),
-            //     );
-            //     // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
-            //   }
-            // ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => changeValue(10),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.all(20),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("10"),
+                          Text("olio")
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+                // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+              }
+            ),
           ],
         ),
         SizedBox(
