@@ -1,3 +1,6 @@
+import 'package:fitflow/class/ingredient.dart';
+import 'package:fitflow/class/pouring_config.dart';
+import 'package:fitflow/mocks/pouring_config.dart';
 import 'package:fitflow/ui/pages/manage_timer.dart';
 import 'package:fitflow/ui/pages/pouring.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +14,12 @@ class PourTab extends StatefulWidget {
 }
 
 class _PourTabState extends State<PourTab> {
-  int _currentValue = 50;
+  PouringConfig current = PouringConfig(20, 0);
   late Picker mypicker;
 
   @override
   Widget build(BuildContext context) {
 
-    final List productList = ["Oil", "Milk"];
     final List gramsList = List<int>.generate(100, (i) => i + 1);
 
     mypicker = Picker(
@@ -25,7 +27,7 @@ class _PourTabState extends State<PourTab> {
         adapter: PickerDataAdapter<String>(
             pickerData: [
               gramsList,
-              productList
+              Ingredients
             ],
             isArray: true
         ),
@@ -41,10 +43,10 @@ class _PourTabState extends State<PourTab> {
         title: const Text("Please Select"),
         selectedTextStyle: TextStyle(color: Colors.blue),
         onSelect: (Picker picker, int c, List value) {
-          print(picker.getSelectedValues());
+          // TODO: do something
         }
     );
-    mypicker.selecteds = [20, 0];
+    mypicker.selecteds = current.getConfig();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,25 +68,25 @@ class _PourTabState extends State<PourTab> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: pouring_configs.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () => changeValue(10),
+                      onPressed: () => changeValue(pouring_configs[index]),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(20),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("10"),
-                          Text("olio")
+                          Text("${pouring_configs[index].quantity}"),
+                          Text("${Ingredients[pouring_configs[index].what]}")
                         ],
                       ),
                     ),
@@ -113,9 +115,11 @@ class _PourTabState extends State<PourTab> {
     );
   }
 
-  void changeValue(int value) {
+  void changeValue(PouringConfig config) {
     setState(() {
-      _currentValue = value;
+      current.setConfig(config.getConfig());
+      current.quantity--;
+      mypicker.selecteds = current.getConfig();
     });
   }
 
