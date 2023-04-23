@@ -12,15 +12,39 @@ class _SettingsTabState extends State<SettingsTab> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const ListTile(
-          leading: CircleAvatar(
-            radius: 30, // Image radius
-            backgroundImage: NetworkImage(
-              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
-            ),
+        Card(
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          title: Text("Andrea Dipace"),
-          subtitle: Text("bho"),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(
+                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Andrea Dipace",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    Text(
+                      "bla bla bla",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         ),
         Padding(
           padding: const EdgeInsets.symmetric(
