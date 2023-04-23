@@ -3,6 +3,7 @@ import 'package:fitflow/class/pouring_config.dart';
 import 'package:fitflow/mocks/pouring_config.dart';
 import 'package:fitflow/ui/pages/manage_timer.dart';
 import 'package:fitflow/ui/pages/pouring.dart';
+import 'package:fitflow/ui/pages/testanimation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
@@ -130,7 +131,7 @@ class _PourTabState extends State<PourTab> {
 
   void startPouring() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const PouringPage())
+      MaterialPageRoute(builder: (context) => const OpenContainerTransformDemo())
     );
   }
 }

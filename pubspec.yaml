@@ -38,6 +38,7 @@ dependencies:
   numberpicker: ^2.1.2
   fl_chart: ^0.62.0
   flutter_picker: ^2.1.0
+  animations: ^2.0.7
 
 dev_dependencies:
   flutter_test:
