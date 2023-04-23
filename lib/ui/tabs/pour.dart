@@ -20,15 +20,13 @@ class _PourTabState extends State<PourTab> {
   @override
   Widget build(BuildContext context) {
 
-    final List gramsList = List<int>.generate(100, (i) => i + 1);
-
     mypicker = Picker(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       selecteds: [20, 0],
       adapter: PickerDataAdapter<String>(
           pickerData: [
-            gramsList,
-            Ingredients
+            GramsList,
+            IngredientsList
           ],
           isArray: true
       ),
@@ -87,7 +85,7 @@ class _PourTabState extends State<PourTab> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("${pouring_configs[index].quantity}"),
-                          Text("${Ingredients[pouring_configs[index].what]}")
+                          Text("${IngredientsList[pouring_configs[index].what]}")
                         ],
                       ),
                     ),
