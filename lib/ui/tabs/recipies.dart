@@ -29,10 +29,6 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
     return ListView.builder(
       itemCount: 10,
       itemBuilder: (context, index) {
-        // return GestureDetector(
-        //   // onTap: () => open_recipe_page(),
-        //   child: ,
-        // );
         return _OpenContainerWrapper(
           transitionType: _transitionType,
           closedBuilder: (BuildContext _, VoidCallback openContainer) {
@@ -43,12 +39,6 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
       }
     );
   }
-
-  // void open_recipe_page() {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(builder: (context) => RecipePage())
-  //   );
-  // }
 }
 
 class _RecipeCard extends StatelessWidget {
@@ -62,6 +52,7 @@ class _RecipeCard extends StatelessWidget {
       openContainer: openContainer,
       height: 200,
       child: Card(
+        elevation: 5,
         child: SizedBox(
           width: 300,
           height: 200,
@@ -76,7 +67,7 @@ class _RecipeCard extends StatelessWidget {
                 )
               ),
               const Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

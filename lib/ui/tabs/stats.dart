@@ -134,7 +134,7 @@ class _StatsTabState extends State<StatsTab> {
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
+            showTitles: false,
             reservedSize: 30,
             interval: 1,
             getTitlesWidget: bottomTitleWidgets,
@@ -142,7 +142,7 @@ class _StatsTabState extends State<StatsTab> {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
+            showTitles: false,
             interval: 1,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
@@ -181,8 +181,6 @@ class _StatsTabState extends State<StatsTab> {
             show: true,
             gradient: LinearGradient(
               colors: gradientColors
-                  .map((color) => color.withOpacity(0.3))
-                  .toList(),
             ),
           ),
         ),

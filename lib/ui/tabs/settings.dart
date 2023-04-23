@@ -10,6 +10,68 @@ class SettingsTab extends StatefulWidget {
 class _SettingsTabState extends State<SettingsTab> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Settings");
+    return ListView(
+      children: [
+        const ListTile(
+          leading: CircleAvatar(
+            radius: 30, // Image radius
+            backgroundImage: NetworkImage(
+              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+            ),
+          ),
+          title: Text("Andrea Dipace"),
+          subtitle: Text("bho"),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 4
+          ),
+          child: Text(
+            "UI",
+            style: Theme.of(context).textTheme.headlineSmall,
+          )
+        ),
+        ListTile(
+          leading: const Icon(Icons.dark_mode),
+          title: const Text("Tema scuro"),
+          trailing: Switch(
+              value: false,
+              onChanged: (bool t) => print('changed')
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.list_alt),
+          title: const Text("bla bla bla"),
+          trailing: Switch(
+              value: false,
+              onChanged: (bool t) => print('changed')
+          ),
+        ),
+        Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 4
+            ),
+            child: Text(
+              "Daily goals",
+              style: Theme.of(context).textTheme.headlineSmall,
+            )
+        ),
+        ListTile(
+          leading: const Icon(Icons.list_alt),
+          title: const Text("bla bla bla"),
+          trailing: Switch(
+              value: true,
+              onChanged: (bool t) => print('changed')
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.edit),
+          title: const Text("bla bla bla"),
+          onTap: () => print('changed'),
+        )
+      ],
+    );
   }
 }
