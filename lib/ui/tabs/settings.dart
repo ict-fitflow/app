@@ -8,6 +8,10 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
+  bool _compact_view = true;
+  bool _dark_mode = false;
+  bool _daily_goals = true;
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -24,7 +28,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 const CircleAvatar(
                   radius: 50,
                   backgroundImage: NetworkImage(
-                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+                      'https://i.guim.co.uk/img/media/8dd989f70bc471a8dd2970d87c5338501bb88af1/142_217_3250_1951/master/3250.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=98149160ba44c2da042cd76503c05c40'
                   ),
                 ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
@@ -33,11 +37,11 @@ class _SettingsTabState extends State<SettingsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Andrea Dipace",
+                      "Mario Rossi",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(
-                      "bla bla bla",
+                      "Member since 2023",
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ],
@@ -58,18 +62,18 @@ class _SettingsTabState extends State<SettingsTab> {
         ),
         ListTile(
           leading: const Icon(Icons.dark_mode),
-          title: const Text("Tema scuro"),
+          title: const Text("Dark theme"),
           trailing: Switch(
-              value: false,
-              onChanged: (bool t) => print('changed')
+              value: _dark_mode,
+              onChanged: _toggle_dark_mode
           ),
         ),
         ListTile(
           leading: const Icon(Icons.list_alt),
-          title: const Text("bla bla bla"),
+          title: const Text("Compact view"),
           trailing: Switch(
-              value: false,
-              onChanged: (bool t) => print('changed')
+              value: _compact_view,
+              onChanged: _toggle_compact_view
           ),
         ),
         Padding(
@@ -83,19 +87,42 @@ class _SettingsTabState extends State<SettingsTab> {
             )
         ),
         ListTile(
-          leading: const Icon(Icons.list_alt),
-          title: const Text("bla bla bla"),
+          leading: const Icon(Icons.calendar_month),
+          title: const Text("Enable daily goal"),
           trailing: Switch(
-              value: true,
-              onChanged: (bool t) => print('changed')
+              value: _daily_goals,
+              onChanged: _toggle_enable_goals
           ),
         ),
         ListTile(
           leading: const Icon(Icons.edit),
-          title: const Text("bla bla bla"),
-          onTap: () => print('changed'),
+          title: const Text("Edit goals"),
+          onTap: _edit_daily_goals,
+          enabled: _daily_goals,
         )
       ],
     );
+  }
+
+  void _toggle_enable_goals(bool value) {
+    setState(() {
+      _daily_goals = value;
+    });
+  }
+
+  void _edit_daily_goals() {
+    throw UnimplementedError("Edit daily goals");
+  }
+
+  void _toggle_compact_view(bool value) {
+    setState(() {
+      _compact_view = value;
+    });
+  }
+
+  void _toggle_dark_mode(bool value) {
+    setState(() {
+      _dark_mode = value;
+    });
   }
 }
