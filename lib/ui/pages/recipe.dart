@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:fitflow/class/recipe.dart';
 import 'package:flutter/material.dart';
 
@@ -72,22 +74,38 @@ class _RecipePageState extends State<RecipePage> {
                 // _index = index;
               });
             },
-            steps: <Step>[
-              Step(
-                title: const Text('Step 1 title'),
-                content: Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Text('Content for Step 1')
-                ),
-              ),
-              Step(
-                title: const Text('Step 2 title'),
+            steps: widget.recipe.steps.map((step) {
+              late Widget content;
+              if (step.pour != null) {
+                content = Text("${step.pour!.what} ${step.pour!.quantity}");
+              }
+              else {
+                content = Text('nothing to show');
+              }
+              return Step(
+                title: Text(step.name),
                 content: Container(
                     alignment: Alignment.centerLeft,
-                    child: const Text('Content for Step 2')
-                ),
-              ),
-            ],
+                    child: content
+                )
+              );
+            }).toList()
+            // <Step>[
+            //   Step(
+            //     title: const Text('Step 1 title'),
+            //     content: Container(
+            //       alignment: Alignment.centerLeft,
+            //       child: const Text('Content for Step 1')
+            //     ),
+            //   ),
+            //   Step(
+            //     title: const Text('Step 2 title'),
+            //     content: Container(
+            //         alignment: Alignment.centerLeft,
+            //         child: const Text('Content for Step 2')
+            //     ),
+            //   ),
+            // ],
           ),
         ],
       ),

@@ -2,9 +2,10 @@ import 'package:fitflow/class/pouring_config.dart';
 
 class Step {
 
-  PouringConfig? pour;
+  String name;
   String description;
+  PouringConfig? pour;
 
-  Step(this.description, this.pour);
+  Step(this.name, this.description, this.pour);
 
 }

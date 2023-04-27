@@ -6,8 +6,8 @@ final List<Recipe> recipes = [
   Recipe(
       "prima", RecipeDifficulty.hard, 5,
       [
-        Step("Aggiungiamo qualcosa", PouringConfig(5, 2)),
-        Step("Mescoliamo per bene", null)
+        Step("Aggiungiamo qualcosa", "bla bla bal", PouringConfig(5, 2)),
+        Step("Mescoliamo per bene", "bla", null)
       ]
   ),
 ];
