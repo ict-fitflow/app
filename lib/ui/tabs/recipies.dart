@@ -1,4 +1,6 @@
 import 'package:animations/animations.dart';
+import 'package:fitflow/class/recipe.dart';
+import 'package:fitflow/mocks/recipe.dart';
 import 'package:fitflow/ui/pages/recipe.dart';
 import 'package:flutter/material.dart';
 
@@ -27,14 +29,15 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: recipes.length,
       itemBuilder: (context, index) {
         return _OpenContainerWrapper(
           transitionType: _transitionType,
           closedBuilder: (BuildContext _, VoidCallback openContainer) {
-            return _RecipeCard(openContainer: openContainer);
+            return _RecipeCard(openContainer: openContainer, recipe: recipes[index]);
           },
           onClosed: (bool? isMarkedAsDone) => print('modal close'),
+          recipe: recipes[index]
         );
       }
     );
@@ -42,13 +45,16 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
 }
 
 class _RecipeCard extends StatelessWidget {
-  const _RecipeCard({required this.openContainer});
+  Recipe recipe;
+
+  _RecipeCard({required this.openContainer, required this.recipe});
 
   final VoidCallback openContainer;
 
   @override
   Widget build(BuildContext context) {
     return _InkWellOverlay(
+      recipe: recipe,
       openContainer: openContainer,
       height: 200,
       child: Card(
@@ -61,18 +67,18 @@ class _RecipeCard extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Text(
-                    'Recipe name',
+                    recipe.name,
                     style: Theme.of(context).textTheme.displaySmall
                   )
                 )
               ),
-              const Padding(
-                padding: EdgeInsets.all(15),
+              Padding(
+                padding: const EdgeInsets.all(15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Facile'),
-                    Text('5 min')
+                    Text(recipe.difficulty.name),
+                    Text('${recipe.time} min')
                   ],
                 ),
               )
@@ -85,10 +91,13 @@ class _RecipeCard extends StatelessWidget {
 }
 
 class _InkWellOverlay extends StatelessWidget {
-  const _InkWellOverlay({
+  Recipe recipe;
+
+  _InkWellOverlay({
     this.openContainer,
     this.height,
     this.child,
+    required this.recipe,
   });
 
   final VoidCallback? openContainer;
@@ -108,10 +117,13 @@ class _InkWellOverlay extends StatelessWidget {
 }
 
 class _OpenContainerWrapper extends StatelessWidget {
-  const _OpenContainerWrapper({
+  Recipe recipe;
+
+  _OpenContainerWrapper({
     required this.closedBuilder,
     required this.transitionType,
     required this.onClosed,
+    required this.recipe,
   });
 
   final CloseContainerBuilder closedBuilder;
@@ -123,7 +135,7 @@ class _OpenContainerWrapper extends StatelessWidget {
     return OpenContainer<bool>(
       transitionType: transitionType,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return const RecipePage();
+        return RecipePage(recipe: recipe);
       },
       onClosed: onClosed,
       tappable: false,

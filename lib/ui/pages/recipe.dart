@@ -1,7 +1,9 @@
+import 'package:fitflow/class/recipe.dart';
 import 'package:flutter/material.dart';
 
 class RecipePage extends StatefulWidget {
-  const RecipePage({Key? key}) : super(key: key);
+  Recipe recipe;
+  RecipePage({Key? key, required this.recipe}) : super(key: key);
 
   @override
   State<RecipePage> createState() => _RecipePageState();
@@ -21,17 +23,17 @@ class _RecipePageState extends State<RecipePage> {
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           Center(
             child: Text(
-              'Recipe name',
+              widget.recipe.name,
               style: Theme.of(context).textTheme.displaySmall
             )
           ),
-          const Padding(
-            padding: EdgeInsets.all(15),
+          Padding(
+            padding: const EdgeInsets.all(15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Facile'),
-                Text('5 min')
+                Text(widget.recipe.difficulty.name),
+                Text('${widget.recipe.time} min')
               ],
             ),
           ),
