@@ -111,7 +111,18 @@ class _SettingsTabState extends State<SettingsTab> {
               title: const Text("Edit goals"),
               onTap: _edit_daily_goals,
               enabled: _daily_goals,
-            )
+            ),
+            ElevatedButton(
+              onPressed: () => _clear_data(),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.all(20),
+                backgroundColor: Colors.red
+              ),
+              child: const Text("Clear data")
+            ),
           ],
         );
       }
@@ -136,5 +147,9 @@ class _SettingsTabState extends State<SettingsTab> {
 
   void _toggle_dark_mode(bool value) {
     usersettings.darkTheme = value;
+  }
+
+  void _clear_data() async {
+    usersettings.clearSession();
   }
 }

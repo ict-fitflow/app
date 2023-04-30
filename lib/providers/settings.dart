@@ -36,7 +36,6 @@ class SettingsProvider extends ChangeNotifier {
   clearSession() async {
     await prefs.reload();
     await prefs.clear();
-    await prefs.setBool('firstTime', false);
     _init();
     notifyListeners();
   }
