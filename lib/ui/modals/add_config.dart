@@ -1,5 +1,5 @@
-import 'package:fitflow/class/ingredient.dart';
-import 'package:fitflow/class/pouring_config.dart';
+import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/pouring_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 

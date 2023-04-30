@@ -1,4 +1,4 @@
-import 'package:fitflow/class/step.dart';
+import 'package:fitflow/classes/step.dart';
 
 enum RecipeDifficulty {
   easy,

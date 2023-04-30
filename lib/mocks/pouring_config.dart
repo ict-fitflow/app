@@ -1,4 +1,4 @@
-import '../class/pouring_config.dart';
+import 'package:fitflow/classes/pouring_config.dart';
 
 List<PouringConfig> pouring_configs = [
   PouringConfig(10, 0),

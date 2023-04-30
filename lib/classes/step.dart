@@ -1,4 +1,4 @@
-import 'package:fitflow/class/pouring_config.dart';
+import 'package:fitflow/classes/pouring_config.dart';
 
 class Step {
 

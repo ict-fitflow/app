@@ -1,6 +1,6 @@
-import 'package:fitflow/class/pouring_config.dart';
-import 'package:fitflow/class/recipe.dart';
-import 'package:fitflow/class/step.dart';
+import 'package:fitflow/classes/pouring_config.dart';
+import 'package:fitflow/classes/recipe.dart';
+import 'package:fitflow/classes/step.dart';
 
 final List<Recipe> recipes = [
   Recipe(

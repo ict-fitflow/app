@@ -1,5 +1,5 @@
 import 'package:animations/animations.dart';
-import 'package:fitflow/class/recipe.dart';
+import 'package:fitflow/classes/recipe.dart';
 import 'package:fitflow/mocks/recipe.dart';
 import 'package:fitflow/ui/pages/recipe.dart';
 import 'package:flutter/material.dart';

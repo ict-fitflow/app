@@ -1,6 +1,4 @@
-import 'dart:js_interop';
-
-import 'package:fitflow/class/recipe.dart';
+import 'package:fitflow/classes/recipe.dart';
 import 'package:flutter/material.dart';
 
 class RecipePage extends StatefulWidget {
