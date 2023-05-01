@@ -11,7 +11,6 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   bool _compact_view = true;
-  bool _dark_mode = false;
   bool _daily_goals = true;
 
   late SettingsProvider usersettings;

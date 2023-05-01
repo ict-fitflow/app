@@ -1,3 +1,5 @@
+import 'package:fitflow/classes/ingredient.dart';
+
 class PouringConfig {
 
   int quantity;
@@ -12,6 +14,11 @@ class PouringConfig {
   void setConfig(List<int> config) {
     quantity = config[0];
     what = config[1];
+  }
+
+  @override
+  String toString() {
+    return "${quantity}g ${IngredientsList[what]}";
   }
 
   factory PouringConfig.fromJSON(Map<String, dynamic> json) {

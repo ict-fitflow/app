@@ -1,7 +1,12 @@
+import 'package:fitflow/classes/pouring_config.dart';
+import 'package:fitflow/classes/user.dart';
+import 'package:fitflow/providers/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PouringPage extends StatefulWidget {
-  const PouringPage({Key? key}) : super(key: key);
+  PouringConfig config;
+  PouringPage({Key? key, required this.config}) : super(key: key);
 
   @override
   State<PouringPage> createState() => _PouringPageState();
@@ -9,19 +14,24 @@ class PouringPage extends StatefulWidget {
 
 class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin {
   late AnimationController controller;
+  late UserProvider userprofile;
 
   @override
   void initState() {
+    super.initState();
+    userprofile = context.read<UserProvider>();
+
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: Duration(seconds: (widget.config.quantity / 100 * 5) as int),
     )..addListener(() {
       setState(() {
-
+        if (controller.isCompleted) {
+          userprofile.add_pour(widget.config);
+        }
       });
     });
     controller.forward();
-    super.initState();
   }
 
   @override

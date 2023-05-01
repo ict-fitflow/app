@@ -130,7 +130,7 @@ class _PourTabState extends State<PourTab> {
 
   void startPouring() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => const PouringPage())
+      MaterialPageRoute(builder: (context) => PouringPage(config: current))
     );
   }
 }
