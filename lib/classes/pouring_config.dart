@@ -1,4 +1,4 @@
-import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/params.dart';
 
 class PouringConfig {
 

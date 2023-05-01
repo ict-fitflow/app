@@ -2,6 +2,59 @@ import 'dart:convert';
 
 import 'package:fitflow/classes/pouring_config.dart';
 
+class User {
+
+  List<PourHistory> history;
+  List<PouringConfig> custom_config;
+  DailyGoal goal;
+
+  User({ required this.history, required this.custom_config, required this.goal });
+
+  factory User.fromJSON(Map<String, dynamic> json) {
+    List<PourHistory> history = (json['history'] as List<dynamic>).map((c) => PourHistory.fromJSON(c)).toList();
+    List<PouringConfig> custom_config = (json['custom_config'] as List<dynamic>).map((c) => PouringConfig.fromJSON(c)).toList();
+
+    return User(
+      history: history,
+      custom_config: custom_config,
+      goal: DailyGoal.fromJSON(json['daily_goal'])
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'history': history,
+    'custom_config': custom_config,
+    'daily_goal': goal
+  };
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
+  }
+}
+
+class DailyGoal {
+
+  int intake;
+  bool enabled;
+
+  DailyGoal({ required this.intake, required this.enabled });
+
+  factory DailyGoal.fromJSON(Map<String, dynamic> json) {
+    return DailyGoal(
+      intake: json['intake'],
+      enabled: json['enabled']
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'intake': intake,
+      'enabled': enabled
+    };
+  }
+}
+
 class PourHistory {
 
   PouringConfig config;
@@ -11,8 +64,8 @@ class PourHistory {
 
   factory PourHistory.fromJSON(Map<String, dynamic> json) {
     return PourHistory(
-      config: PouringConfig.fromJSON(json['config']),
-      date: DateTime.parse(json['date'])
+        config: PouringConfig.fromJSON(json['config']),
+        date: DateTime.parse(json['date'])
     );
   }
 
@@ -21,33 +74,5 @@ class PourHistory {
       'config': config.toJson(),
       'date': date.toString()
     };
-  }
-}
-
-class User {
-
-  List<PourHistory> history;
-  List<PouringConfig> custom_config;
-
-  User({ required this.history, required this.custom_config });
-
-  factory User.fromJSON(Map<String, dynamic> json) {
-    List<PourHistory> history = (json['history'] as List<dynamic>).map((c) => PourHistory.fromJSON(c)).toList();
-    List<PouringConfig> custom_config = (json['custom_config'] as List<dynamic>).map((c) => PouringConfig.fromJSON(c)).toList();
-
-    return User(
-      history: history,
-      custom_config: custom_config
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-    'history': history,
-    'custom_config': custom_config
-  };
-
-  @override
-  String toString() {
-    return jsonEncode(toJson());
   }
 }

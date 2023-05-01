@@ -21,7 +21,8 @@ class UserProvider extends ChangeNotifier {
     if (userprof == null) {
       _user = User(
         history: [],
-        custom_config: pouring_configs
+        custom_config: pouring_configs,
+        goal: DailyGoal(intake: 0, enabled: false)
       );
       await prefs.setString("user", _user.toString());
     }
@@ -36,13 +37,28 @@ class UserProvider extends ChangeNotifier {
   // TODO: add custom config
   // TODO: remove custom config
   // TODO: swap custom config order
-  // TODO: add element to history
+
   void add_pour(PouringConfig conf) {
     _user.history.add(PourHistory(config: conf, date: DateTime.now()));
     update();
   }
 
   List<PourHistory> get history => _user.history;
+
+  // toggle daily goal
+  get daily_goal => _user.goal;
+
+  bool get daily_goal_enabled => _user.goal.enabled;
+  set daily_goal_enabled(bool v) {
+    _user.goal.enabled = v;
+    update();
+  }
+
+  int get daily_goal_intake => _user.goal.intake;
+  set daily_goal_intake(int v) {
+    _user.goal.intake = v;
+    update();
+  }
 
   // update user profile
   void update() async {

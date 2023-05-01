@@ -1,4 +1,4 @@
-import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -28,7 +28,7 @@ class _AddConfigModalState extends State<AddConfigModal> {
           ],
           isArray: true
       ),
-      hideHeader: true,
+      hideHeader: false,
       title: const Text("Please Select"),
       selectedTextStyle: const TextStyle(color: Colors.blue),
       onSelect: (Picker picker, int c, List value) {

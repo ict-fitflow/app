@@ -1,4 +1,4 @@
-import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/mocks/pouring_config.dart';
 import 'package:fitflow/ui/pages/manage_timer.dart';

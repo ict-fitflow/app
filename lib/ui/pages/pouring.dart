@@ -23,7 +23,7 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: (widget.config.quantity / 100 * 5) as int),
+      duration: Duration(seconds: (widget.config.quantity / 100 * 10).toInt()),
     )..addListener(() {
       setState(() {
         if (controller.isCompleted) {

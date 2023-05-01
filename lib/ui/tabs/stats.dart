@@ -1,6 +1,5 @@
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/charts/bar.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +57,7 @@ class _StatsTabState extends State<StatsTab> {
               "Charts",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            UserBarChart()
+            UserBarChart( daily_goal: user.daily_goal )
           ],
         );
       }

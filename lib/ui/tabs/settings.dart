@@ -1,4 +1,6 @@
 import 'package:fitflow/providers/settings.dart';
+import 'package:fitflow/providers/user.dart';
+import 'package:fitflow/ui/modals/daily_goal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,20 +13,21 @@ class SettingsTab extends StatefulWidget {
 
 class _SettingsTabState extends State<SettingsTab> {
   bool _compact_view = true;
-  bool _daily_goals = true;
 
   late SettingsProvider usersettings;
+  late UserProvider userprofile;
 
   @override
   void initState() {
     super.initState();
     usersettings = context.read<SettingsProvider>();
+    userprofile = context.read<UserProvider>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsProvider>(
-      builder: (context, settings, child) {
+    return Consumer2<SettingsProvider, UserProvider>(
+      builder: (context, settings, userprofile, child) {
         return ListView(
           children: [
             Card(
@@ -101,7 +104,7 @@ class _SettingsTabState extends State<SettingsTab> {
               leading: const Icon(Icons.calendar_month),
               title: const Text("Enable daily goal"),
               trailing: Switch(
-                  value: _daily_goals,
+                  value: userprofile.daily_goal_enabled,
                   onChanged: _toggle_enable_goals
               ),
             ),
@@ -109,7 +112,7 @@ class _SettingsTabState extends State<SettingsTab> {
               leading: const Icon(Icons.edit),
               title: const Text("Edit goals"),
               onTap: _edit_daily_goals,
-              enabled: _daily_goals,
+              enabled: userprofile.daily_goal_enabled,
             ),
             ElevatedButton(
               onPressed: () => _clear_data(),
@@ -129,13 +132,14 @@ class _SettingsTabState extends State<SettingsTab> {
   }
 
   void _toggle_enable_goals(bool value) {
-    setState(() {
-      _daily_goals = value;
-    });
+    userprofile.daily_goal_enabled = value;
   }
 
   void _edit_daily_goals() {
-    throw UnimplementedError("Edit daily goals");
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => const DailyGoalModal(),
+    );
   }
 
   void _toggle_compact_view(bool value) {

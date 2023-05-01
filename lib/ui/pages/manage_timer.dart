@@ -1,4 +1,4 @@
-import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/mocks/pouring_config.dart';
 import 'package:fitflow/ui/modals/add_config.dart';
@@ -65,35 +65,9 @@ class _ManageTimerPageState extends State<ManageTimerPage> {
   }
 
   void _add_config() {
-    Picker mypicker = Picker(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        selecteds: [20, 0],
-        adapter: PickerDataAdapter<String>(
-            pickerData: [
-              GramsList,
-              IngredientsList
-            ],
-            isArray: true
-        ),
-        hideHeader: true,
-        // delimiter: [
-        //   PickerDelimiter(
-        //       child: Container(
-        //         width: 30.0,
-        //         alignment: Alignment.center,
-        //         child: Icon(Icons.more_vert),
-        //       ))
-        // ],
-        title: const Text("Please Select"),
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        onSelect: (Picker picker, int c, List value) {
-          // TODO: do something
-        }
-    );
-
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => AddConfigModal(),
+      builder: (BuildContext context) => const AddConfigModal(),
     );
   }
 }
