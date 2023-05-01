@@ -13,4 +13,18 @@ class PouringConfig {
     quantity = config[0];
     what = config[1];
   }
+
+  factory PouringConfig.fromJSON(Map<String, dynamic> json) {
+    return PouringConfig(
+      json['quantity'],
+      json['what']
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'quantity': quantity,
+      'what': what
+    };
+  }
 }

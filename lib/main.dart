@@ -1,4 +1,5 @@
 import 'package:fitflow/providers/settings.dart';
+import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/onboardingpage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,11 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => SettingsProvider(prefs: prefs),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(prefs: prefs),
+          lazy: false,
         )
       ],
       child: const FitFlowApp(),
