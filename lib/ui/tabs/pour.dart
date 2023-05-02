@@ -26,7 +26,7 @@ class _PourTabState extends State<PourTab> {
       adapter: PickerDataAdapter<String>(
           pickerData: [
             GramsList,
-            IngredientsList
+            IngredientsList.map((e) => e.name).toList()
           ],
           isArray: true
       ),
@@ -85,7 +85,7 @@ class _PourTabState extends State<PourTab> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("${pouring_configs[index].quantity}"),
-                          Text("${IngredientsList[pouring_configs[index].what]}")
+                          Text("${pouring_configs[index].what}")
                         ],
                       ),
                     ),
@@ -117,7 +117,6 @@ class _PourTabState extends State<PourTab> {
   void changeValue(PouringConfig config) {
     setState(() {
       current.setConfig(config.getConfig());
-      current.quantity--;
       mypicker.selecteds = current.getConfig();
     });
   }

@@ -2,23 +2,23 @@ import 'package:fitflow/classes/params.dart';
 
 class PouringConfig {
 
-  int quantity;
-  int what;
+  int _quantity;
+  int _what;
 
-  PouringConfig(this.quantity, this.what);
+  PouringConfig(this._quantity, this._what);
 
   List<int> getConfig() {
-    return [quantity, what];
+    return [_quantity, _what];
   }
 
   void setConfig(List<int> config) {
-    quantity = config[0];
-    what = config[1];
+    _quantity = config[0];
+    _what = config[1];
   }
 
   @override
   String toString() {
-    return "${quantity}g ${IngredientsList[what]}";
+    return "${GramsList[quantity]}g ${IngredientsList[_what].name}";
   }
 
   factory PouringConfig.fromJSON(Map<String, dynamic> json) {
@@ -30,8 +30,11 @@ class PouringConfig {
 
   Map<String, dynamic> toJson() {
     return {
-      'quantity': quantity,
-      'what': what
+      'quantity': _quantity,
+      'what': _what
     };
   }
+
+  int get quantity => GramsList[_quantity];
+  String get what => IngredientsList[_what].name;
 }

@@ -1,5 +1,4 @@
 import 'package:fitflow/classes/pouring_config.dart';
-import 'package:fitflow/classes/user.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +19,11 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
   void initState() {
     super.initState();
     userprofile = context.read<UserProvider>();
+    int seconds = (widget.config.quantity / 100 * 10).toInt() + 1;
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: (widget.config.quantity / 100 * 10).toInt()),
+      duration: Duration(seconds: seconds),
     )..addListener(() {
       setState(() {
         if (controller.isCompleted) {

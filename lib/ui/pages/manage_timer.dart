@@ -1,9 +1,7 @@
-import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/mocks/pouring_config.dart';
 import 'package:fitflow/ui/modals/add_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 
 class ManageTimerPage extends StatefulWidget {
   const ManageTimerPage({Key? key}) : super(key: key);
@@ -31,7 +29,7 @@ class _ManageTimerPageState extends State<ManageTimerPage> {
           for (int index = 0; index < pouring_configs.length; index += 1)
             ListTile(
               key: Key('$index'),
-              title: Text('${pouring_configs[index].quantity}, ${IngredientsList[pouring_configs[index].what]}'),
+              title: Text('${pouring_configs[index].quantity}, ${pouring_configs[index]}'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

@@ -1,7 +1,7 @@
 import 'package:fitflow/classes/pouring_config.dart';
 
 List<PouringConfig> pouring_configs = [
-  PouringConfig(10, 0),
-  PouringConfig(20, 1),
-  PouringConfig(30, 2)
+  PouringConfig(9, 0),
+  PouringConfig(19, 1),
+  PouringConfig(29, 2)
 ];
