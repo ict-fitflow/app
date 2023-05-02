@@ -1,10 +1,11 @@
 import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
-import 'package:fitflow/mocks/pouring_config.dart';
+import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/manage_timer.dart';
 import 'package:fitflow/ui/pages/pouring.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:provider/provider.dart';
 
 class PourTab extends StatefulWidget {
   const PourTab({Key? key}) : super(key: key);
@@ -65,35 +66,39 @@ class _PourTabState extends State<PourTab> {
                 )
               ],
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: pouring_configs.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => changeValue(pouring_configs[index]),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+            Consumer<UserProvider>(
+              builder: (context, user, child) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: user.configs.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => changeValue(user.configs[index]),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(20),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("${user.configs[index].quantity}"),
+                              Text("${user.configs[index].what}")
+                            ],
+                          ),
                         ),
-                        padding: const EdgeInsets.all(20),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("${pouring_configs[index].quantity}"),
-                          Text("${pouring_configs[index].what}")
-                        ],
-                      ),
-                    ),
-                  ),
+                    );
+                    // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
+                  }
                 );
-                // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
               }
-            ),
+            )
           ],
         ),
         SizedBox(

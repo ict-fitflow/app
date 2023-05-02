@@ -31,7 +31,7 @@ class _SettingsTabState extends State<SettingsTab> {
         return ListView(
           children: [
             Card(
-                elevation: 8,
+                elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),

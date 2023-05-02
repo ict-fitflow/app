@@ -30,10 +30,16 @@ class _StatsTabState extends State<StatsTab> {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, user, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
+        return ListView(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.max,
           children: [
+            Text(
+              "Charts",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            UserBarChart( daily_goal: user.daily_goal ),
+            space,
             Text(
               "History",
               style: Theme.of(context).textTheme.headlineMedium,
@@ -53,11 +59,51 @@ class _StatsTabState extends State<StatsTab> {
               }).toList()
             ),
             space,
-            Text(
-              "Charts",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            UserBarChart( daily_goal: user.daily_goal )
+            // Text(
+            //   "Daily goal",
+            //   style: Theme.of(context).textTheme.headlineMedium,
+            // ),
+            // Card(
+            //   elevation: 4,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(20),
+            //   ),
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       children: [
+            //         Text("idk what to put here"),
+            //         SizedBox(
+            //           width: 100,
+            //           height: 100,
+            //           child: Stack(
+            //             children: [
+            //               Center(
+            //                 child: Container(
+            //                   width: 100,
+            //                   height: 100,
+            //                   child: CircularProgressIndicator(
+            //                     strokeWidth: 5,
+            //                     value: 0.4
+            //                   ),
+            //                 ),
+            //               ),
+            //               Center(
+            //                 child: Text(
+            //                     "45%",
+            //                     style: Theme.of(context).textTheme.titleMedium
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   )
+            // ),
+            // space,
           ],
         );
       }
