@@ -20,18 +20,19 @@ class _AddConfigModalState extends State<AddConfigModal> {
   Widget build(BuildContext context) {
     mypicker = Picker(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      selecteds: [20, 0],
+      selecteds: [19, 1],
       adapter: PickerDataAdapter<String>(
           pickerData: [
             GramsList,
-            IngredientsList
+            IngredientsList.map((i) => i.name).toList()
           ],
           isArray: true
       ),
-      hideHeader: false,
+      hideHeader: true,
       title: const Text("Please Select"),
       selectedTextStyle: const TextStyle(color: Colors.blue),
-      onSelect: (Picker picker, int c, List value) {
+      onSelect: (Picker picker, int c,  List<int> value) {
+        current.setConfig(value);
       }
     );
     mypicker.selecteds = current.getConfig();
@@ -62,6 +63,6 @@ class _AddConfigModalState extends State<AddConfigModal> {
   }
 
   void _add_config() {
-    throw UnimplementedError("Add config");
+    Navigator.pop(context, current);
   }
 }

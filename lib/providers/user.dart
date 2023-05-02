@@ -60,6 +60,27 @@ class UserProvider extends ChangeNotifier {
     update();
   }
 
+  List<PouringConfig> get configs => _user.custom_config;
+
+  void add_config(PouringConfig config) {
+    _user.custom_config.add(config);
+    update();
+  }
+
+  void delete_config(int index) {
+    _user.custom_config.removeAt(index);
+    update();
+  }
+
+  void reorder_config(int old_index, int new_index) {
+    if (old_index < new_index) {
+      new_index -= 1;
+    }
+    final PouringConfig item = _user.custom_config.removeAt(old_index);
+    _user.custom_config.insert(new_index, item);
+    update();
+  }
+
   // update user profile
   void update() async {
     await prefs.setString("user", _user.toString());

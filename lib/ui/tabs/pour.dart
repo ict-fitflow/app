@@ -41,8 +41,8 @@ class _PourTabState extends State<PourTab> {
       // ],
       title: const Text("Please Select"),
       selectedTextStyle: TextStyle(color: Colors.blue),
-      onSelect: (Picker picker, int c, List value) {
-        // TODO: do something
+      onSelect: (Picker picker, int c, List<int> value) {
+        current.setConfig(value);
       }
     );
     mypicker.selecteds = current.getConfig();
