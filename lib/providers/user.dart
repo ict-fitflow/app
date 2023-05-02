@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/classes/user.dart';
-import 'package:fitflow/mocks/pouring_config.dart';
+import 'package:fitflow/mocks/pouring.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +20,7 @@ class UserProvider extends ChangeNotifier {
     // if not in, create it
     if (userprof == null) {
       _user = User(
-        history: [],
+        history: List<PourHistory>.from(pouring_history),
         custom_config: pouring_configs,
         goal: DailyGoal(intake: 0, enabled: false)
       );

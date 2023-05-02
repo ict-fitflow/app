@@ -18,7 +18,7 @@ class PouringConfig {
 
   @override
   String toString() {
-    return "${GramsList[quantity]}g ${IngredientsList[_what].name}";
+    return "${quantity}g ${what}";
   }
 
   factory PouringConfig.fromJSON(Map<String, dynamic> json) {

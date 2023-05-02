@@ -1,5 +1,5 @@
 import 'package:fitflow/classes/pouring_config.dart';
-import 'package:fitflow/mocks/pouring_config.dart';
+import 'package:fitflow/mocks/pouring.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/modals/add_config.dart';
 import 'package:flutter/material.dart';
