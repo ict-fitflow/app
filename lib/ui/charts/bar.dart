@@ -29,6 +29,8 @@ class _UserBarChartState extends State<UserBarChart> {
   final double width = 7;
 
   List<BarChartGroupData> showingBarGroups = [];
+  List<List<PourHistory>> week_history = [];
+  // int week_index = 1;
 
   int touchedGroupIndex = -1;
   double maxY = KcalList.last;
@@ -40,92 +42,94 @@ class _UserBarChartState extends State<UserBarChart> {
 
     // due performance motivation
     maxY_opt = downscale(maxY).toDouble();
+
+    _clear_week_data();
     _prepare_data();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 1.5,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: BarChart(
-                    BarChartData(
-                      maxY: maxY_opt,
-                      barTouchData: BarTouchData(
-                        touchTooltipData: BarTouchTooltipData(
-                          tooltipBgColor: Colors.grey,
-                          getTooltipItem: (a, b, c, d) => null,
-                        ),
-                        touchCallback: (FlTouchEvent event, response) {
-                          if (response == null || response.spot == null) {
-                            setState(() {
-                              touchedGroupIndex = -1;
-                              showingBarGroups = List.of(showingBarGroups);
-                            });
-                            return;
-                          }
-                          touchedGroupIndex = response.spot!.touchedBarGroupIndex;
-                          // TODO: show what customer pour in that day
-                        },
-                      ),
-                      titlesData: FlTitlesData(
-                        show: true,
-                        rightTitles: AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        topTitles: AxisTitles(
-                          sideTitles: SideTitles(showTitles: false),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            getTitlesWidget: bottomTitles,
-                            reservedSize: 42,
+    return Column(
+      children: [
+        Stack(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 1.5,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      child: BarChart(
+                        BarChartData(
+                          maxY: maxY_opt,
+                          barTouchData: BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                              tooltipBgColor: Colors.grey,
+                              getTooltipItem: (a, b, c, d) => null,
+                            ),
+                            touchCallback: _touch_callback,
+                          ),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            rightTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            topTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false),
+                            ),
+                            bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                getTitlesWidget: bottomTitles,
+                                reservedSize: 42,
+                              ),
+                            ),
+                            leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 28,
+                                interval: 1,
+                                getTitlesWidget: leftTitles,
+                              ),
+                            ),
+                          ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          barGroups: showingBarGroups,
+                          gridData: FlGridData(
+                              show: true,
+                              drawVerticalLine: false,
+                              horizontalInterval: downscale(100).toDouble(),
+                              getDrawingHorizontalLine: (value) {
+                                if (widget.daily_goal.enabled && upscale(value) == widget.daily_goal.intake) {
+                                  return FlLine(
+                                    color: Colors.red,
+                                    strokeWidth: 4,
+                                  );
+                                }
+                                else {
+                                  return FlLine(strokeWidth: 0);
+                                }
+                              }
                           ),
                         ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 28,
-                            interval: 1,
-                            getTitlesWidget: leftTitles,
-                          ),
-                        ),
-                      ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      barGroups: showingBarGroups,
-                      gridData: FlGridData(
-                        show: true,
-                        drawVerticalLine: false,
-                        horizontalInterval: downscale(100).toDouble(),
-                        getDrawingHorizontalLine: (value) {
-                          if (widget.daily_goal.enabled && upscale(value) == widget.daily_goal.intake) {
-                            return FlLine(
-                              color: Colors.red,
-                              strokeWidth: 4,
-                            );
-                          }
-                          else {
-                            return FlLine(strokeWidth: 0);
-                          }
-                        }
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        )
+              ),
+            )
+          ],
+        ),
+        if (touchedGroupIndex != -1)
+          Column(
+            children: week_history[touchedGroupIndex].map(
+              (e) => Text('${e.config}')
+            ).toList()
+          )
       ],
     );
   }
@@ -133,9 +137,11 @@ class _UserBarChartState extends State<UserBarChart> {
   void _prepare_data() {
     // add weeks slot
     int index = 0;
-    for (var i = 0; i < 7; i++) {
+    int weekday = DateTime.now().weekday;
+
+    for (int d = 0; d < weekday; d++) {
       final now = DateTime.now();
-      final diff = Duration(days: i, hours: now.hour, minutes: now.minute);
+      final diff = Duration(days: d, hours: now.hour, minutes: now.minute);
       DateTime i_days_ago = now.subtract(diff);
       List<PourHistory> toSave = [];
       double count = 0;
@@ -145,13 +151,17 @@ class _UserBarChartState extends State<UserBarChart> {
         count += widget.history[index].config.calories;
         index++;
       }
+      week_history[d].addAll(toSave);
 
+      int i = weekday - 1 - d;
       showingBarGroups.add(makeGroupData(i, downscale(count).toDouble()));
     }
-
     showingBarGroups = List.from(showingBarGroups.reversed);
-  }
 
+    for (int i = weekday; i < 7; i++) {
+      showingBarGroups.add(makeGroupData(i, 0));
+    }
+  }
 
   int downscale(double v) {
     return v ~/ 100;
@@ -182,9 +192,10 @@ class _UserBarChartState extends State<UserBarChart> {
 
   Widget bottomTitles(double value, TitleMeta meta) {
     final titles = <String>['Mn', 'Te', 'Wd', 'Tu', 'Fr', 'St', 'Su'];
-
+    // int index = titles.length - 1 - value.toInt();
+    int index = value.toInt();
     final Widget text = Text(
-      titles[value.toInt()],
+      titles[index],
       style: const TextStyle(
         color: Color(0xff7589a2),
         fontWeight: FontWeight.bold,
@@ -213,4 +224,23 @@ class _UserBarChartState extends State<UserBarChart> {
     );
   }
 
+  void _clear_week_data() {
+    week_history.clear();
+    for (int i = 0; i < 7; i++) {
+      week_history.add([]);
+    }
+  }
+
+  void _touch_callback(FlTouchEvent event, BarTouchResponse? response) {
+    if (!(event is FlTapUpEvent)) return;
+    if (response == null || response.spot == null) {
+      setState(() {
+        touchedGroupIndex = -1;
+      });
+      return;
+    }
+    setState(() {
+      touchedGroupIndex = response.spot!.touchedBarGroupIndex;
+    });
+  }
 }
