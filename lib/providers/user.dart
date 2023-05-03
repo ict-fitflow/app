@@ -32,14 +32,12 @@ class UserProvider extends ChangeNotifier {
       print(userprofsmap);
       _user = User.fromJSON(userprofsmap);
     }
+
+    _user.history.sort((PourHistory a, PourHistory b) => a.date.isBefore(b.date) == true ? 1 : -1);
   }
 
-  // TODO: add custom config
-  // TODO: remove custom config
-  // TODO: swap custom config order
-
   void add_pour(PouringConfig conf) {
-    _user.history.add(PourHistory(config: conf, date: DateTime.now()));
+    _user.history.insert(0, PourHistory(config: conf, date: DateTime.now()));
     update();
   }
 

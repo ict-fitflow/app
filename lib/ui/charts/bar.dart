@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class UserBarChart extends StatefulWidget {
   DailyGoal daily_goal;
+  List<PourHistory> history;
 
-  UserBarChart({Key? key, required this.daily_goal}) : super(key: key);
+  UserBarChart({Key? key, required this.daily_goal, required this.history}) : super(key: key);
 
   @override
   State<UserBarChart> createState() => _UserBarChartState();
@@ -39,12 +40,7 @@ class _UserBarChartState extends State<UserBarChart> {
 
     // due performance motivation
     maxY_opt = downscale(maxY).toDouble();
-
-    var rng = Random();
-    for (var i = 0; i < 7; i++) {
-      double v = rng.nextInt(maxY.toInt()).toDouble();
-      showingBarGroups.add(makeGroupData(i, downscale(v).toDouble()));
-    }
+    _prepare_data();
   }
 
   @override
@@ -134,6 +130,29 @@ class _UserBarChartState extends State<UserBarChart> {
     );
   }
 
+  void _prepare_data() {
+    // add weeks slot
+    int index = 0;
+    for (var i = 0; i < 7; i++) {
+      final now = DateTime.now();
+      final diff = Duration(days: i, hours: now.hour, minutes: now.minute);
+      DateTime i_days_ago = now.subtract(diff);
+      List<PourHistory> toSave = [];
+      double count = 0;
+
+      while (index < widget.history.length && widget.history[index].date.isAfter(i_days_ago)) {
+        toSave.add(widget.history[index]);
+        count += widget.history[index].config.calories;
+        index++;
+      }
+
+      showingBarGroups.add(makeGroupData(i, downscale(count).toDouble()));
+    }
+
+    showingBarGroups = List.from(showingBarGroups.reversed);
+  }
+
+
   int downscale(double v) {
     return v ~/ 100;
   }
@@ -193,4 +212,5 @@ class _UserBarChartState extends State<UserBarChart> {
       ],
     );
   }
+
 }

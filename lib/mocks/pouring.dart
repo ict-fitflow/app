@@ -10,7 +10,7 @@ List<PouringConfig> pouring_configs = [
   PouringConfig(29, 2)
 ];
 
-int samples = 50;
+int samples = 100;
 Random rng = Random();
 List<PourHistory> pouring_history = List.generate(samples, (index) {
   final diff = Duration(

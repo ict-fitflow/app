@@ -38,7 +38,10 @@ class _StatsTabState extends State<StatsTab> {
               "Charts",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            UserBarChart( daily_goal: user.daily_goal ),
+            UserBarChart(
+              history: user.history,
+              daily_goal: user.daily_goal
+            ),
             space,
             Text(
               "History",
@@ -46,15 +49,18 @@ class _StatsTabState extends State<StatsTab> {
             ),
             space,
             Column(
-              children: user.history.map((h) {
+              children: user.history.getRange(0, 20).map((h) {
                 Duration diff = DateTime.now().difference(h.date);
-                return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("${h.config.toString()}"),
-                    Text("${humanReadableDiff(diff)}")
-                  ],
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("${h.config.calories.toInt()}: ${h.config.toString()}"),
+                      Text("${humanReadableDiff(diff)}")
+                    ],
+                  )
                 );
               }).toList()
             ),
