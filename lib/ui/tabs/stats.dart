@@ -1,19 +1,8 @@
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/charts/bar.dart';
+import 'package:fitflow/ui/widgets/cards.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-String humanReadableDiff(Duration diff) {
-  if (diff.inDays > 0) {
-    return "${diff.inDays}d";
-  }
-  else if (diff.inHours > 0) {
-    return "${diff.inHours}h";
-  }
-  else {
-    return "${diff.inMinutes}m";
-  }
-}
 
 class StatsTab extends StatefulWidget {
   const StatsTab({Key? key}) : super(key: key);
@@ -49,18 +38,10 @@ class _StatsTabState extends State<StatsTab> {
             ),
             space,
             Column(
-              children: user.history.getRange(0, 20).map((h) {
-                Duration diff = DateTime.now().difference(h.date);
+              children: user.history.getRange(0, 5).map((h) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("${h.config.calories.toInt()}: ${h.config.toString()}"),
-                      Text("${humanReadableDiff(diff)}")
-                    ],
-                  )
+                  padding: EdgeInsets.symmetric(vertical: 1),
+                  child: CardHistory(entry: h)
                 );
               }).toList()
             ),
@@ -116,3 +97,4 @@ class _StatsTabState extends State<StatsTab> {
     );
   }
 }
+
