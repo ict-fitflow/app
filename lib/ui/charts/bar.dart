@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/user.dart';
+import 'package:fitflow/ui/widgets/cards.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -83,7 +82,7 @@ class _UserBarChartState extends State<UserBarChart> {
                               sideTitles: SideTitles(
                                 showTitles: true,
                                 getTitlesWidget: bottomTitles,
-                                reservedSize: 42,
+                                reservedSize: 30,
                               ),
                             ),
                             leftTitles: AxisTitles(
@@ -125,9 +124,14 @@ class _UserBarChartState extends State<UserBarChart> {
           ],
         ),
         if (touchedGroupIndex != -1)
+          Text(
+            "Activities",
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+        if (touchedGroupIndex != -1)
           Column(
             children: week_history[touchedGroupIndex].map(
-              (e) => Text('${e.config}')
+              (e) => CardHistory(entry: e)
             ).toList()
           )
       ],
@@ -135,7 +139,7 @@ class _UserBarChartState extends State<UserBarChart> {
   }
 
   void _prepare_data() {
-    // add weeks slot
+    // TODO: make weeks pagination
     int index = 0;
     int weekday = DateTime.now().weekday;
 
@@ -151,9 +155,9 @@ class _UserBarChartState extends State<UserBarChart> {
         count += widget.history[index].config.calories;
         index++;
       }
-      week_history[d].addAll(toSave);
 
       int i = weekday - 1 - d;
+      week_history[i].addAll(toSave);
       showingBarGroups.add(makeGroupData(i, downscale(count).toDouble()));
     }
     showingBarGroups = List.from(showingBarGroups.reversed);
