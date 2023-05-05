@@ -6,6 +6,8 @@ final List<Ingredient> IngredientsList = [
   Ingredient(name: "Vinegar", cal: 0.12)
 ];
 
+final int SCALE_FACTOR = 50;
+
 final List GramsList = List<int>.generate(100, (i) => i + 1);
 
-final List KcalList = List<int>.generate(40, (i) => i * 100);
+final List KcalList = List<int>.generate(30, (i) => i * SCALE_FACTOR);

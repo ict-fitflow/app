@@ -102,7 +102,7 @@ class _UserBarChartState extends State<UserBarChart> {
                               show: true,
                               checkToShowHorizontalLine: (value) => (widget.daily_goal.enabled && upscale(value) == widget.daily_goal.intake),
                               drawVerticalLine: false,
-                              horizontalInterval: downscale(100).toDouble(),
+                              horizontalInterval: 1,
                               getDrawingHorizontalLine: (value) {
                                 return HorizontalLine(
                                   color: Colors.red,
@@ -165,11 +165,11 @@ class _UserBarChartState extends State<UserBarChart> {
   }
 
   int downscale(double v) {
-    return v ~/ 100;
+    return v ~/ SCALE_FACTOR;
   }
 
   int upscale(double v) {
-    return v.toInt() * 100;
+    return v.toInt() * SCALE_FACTOR;
   }
 
   Widget leftTitles(double value, TitleMeta meta) {
