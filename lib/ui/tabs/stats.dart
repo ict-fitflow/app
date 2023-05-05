@@ -1,5 +1,6 @@
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/charts/bar.dart';
+import 'package:fitflow/ui/charts/pie.dart';
 import 'package:fitflow/ui/widgets/cards.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +25,19 @@ class _StatsTabState extends State<StatsTab> {
           // mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              "Charts",
+              "Calories",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             UserBarChart(
               history: user.history,
               daily_goal: user.daily_goal
             ),
+            space,
+            Text(
+              "Macro nutrients",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            PieChartSample2(),
             space,
             Text(
               "History",
