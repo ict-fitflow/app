@@ -1,3 +1,4 @@
+import 'package:fitflow/classes/history.dart';
 import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/user.dart';
 import 'package:fitflow/ui/widgets/cards.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class UserBarChart extends StatefulWidget {
   DailyGoal daily_goal;
-  List<PourHistory> history;
+  UserHistory history;
 
   UserBarChart({Key? key, required this.daily_goal, required this.history}) : super(key: key);
 
@@ -28,8 +29,6 @@ class _UserBarChartState extends State<UserBarChart> {
   final double width = 7;
 
   List<BarChartGroupData> showingBarGroups = [];
-  List<List<PourHistory>> week_history = [];
-  // int week_index = 1;
 
   int touchedGroupIndex = -1;
   double maxY = KcalList.last;
@@ -41,9 +40,7 @@ class _UserBarChartState extends State<UserBarChart> {
 
     // due performance motivation
     maxY_opt = downscale(maxY).toDouble();
-
-    _clear_week_data();
-    _prepare_data();
+    _prepare_chart_data();
   }
 
   @override
@@ -127,41 +124,12 @@ class _UserBarChartState extends State<UserBarChart> {
           ),
         if (touchedGroupIndex != -1)
           Column(
-            children: week_history[touchedGroupIndex].map(
+            children: widget.history.week_history[touchedGroupIndex].pouring.map(
               (e) => CardHistory(entry: e)
             ).toList()
           )
       ],
     );
-  }
-
-  void _prepare_data() {
-    // TODO: make weeks pagination
-    int index = 0;
-    int weekday = DateTime.now().weekday;
-
-    for (int d = 0; d < weekday; d++) {
-      final now = DateTime.now();
-      final diff = Duration(days: d, hours: now.hour, minutes: now.minute);
-      DateTime i_days_ago = now.subtract(diff);
-      List<PourHistory> toSave = [];
-      double count = 0;
-
-      while (index < widget.history.length && widget.history[index].date.isAfter(i_days_ago)) {
-        toSave.add(widget.history[index]);
-        count += widget.history[index].config.calories;
-        index++;
-      }
-
-      int i = weekday - 1 - d;
-      week_history[i].addAll(toSave);
-      showingBarGroups.add(makeGroupData(i, downscale(count).toDouble()));
-    }
-    showingBarGroups = List.from(showingBarGroups.reversed);
-
-    for (int i = weekday; i < 7; i++) {
-      showingBarGroups.add(makeGroupData(i, 0));
-    }
   }
 
   int downscale(double v) {
@@ -179,7 +147,7 @@ class _UserBarChartState extends State<UserBarChart> {
       fontSize: 14,
     );
     String text;
-    if (upscale(value) % 500 == 0) {
+    if (upscale(value) % 300 == 0) {
       text = "${(upscale(value) / 1000)}k";
     } else {
       return Container();
@@ -225,13 +193,6 @@ class _UserBarChartState extends State<UserBarChart> {
     );
   }
 
-  void _clear_week_data() {
-    week_history.clear();
-    for (int i = 0; i < 7; i++) {
-      week_history.add([]);
-    }
-  }
-
   void _touch_callback(FlTouchEvent event, BarTouchResponse? response) {
     if (!(event is FlTapUpEvent)) return;
     if (response == null || response.spot == null) {
@@ -243,5 +204,16 @@ class _UserBarChartState extends State<UserBarChart> {
     setState(() {
       touchedGroupIndex = response.spot!.touchedBarGroupIndex;
     });
+  }
+
+  void _prepare_chart_data() {
+
+    for (int d = 0; d <= widget.history.weekday; d++) {
+      showingBarGroups.add(makeGroupData(d, downscale(widget.history.week_history[d].calories).toDouble()));
+    }
+
+    for (int i = showingBarGroups.length; i < 7; i++) {
+      showingBarGroups.add(makeGroupData(i, 0));
+    }
   }
 }
