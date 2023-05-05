@@ -100,18 +100,15 @@ class _UserBarChartState extends State<UserBarChart> {
                           barGroups: showingBarGroups,
                           gridData: FlGridData(
                               show: true,
+                              checkToShowHorizontalLine: (value) => (widget.daily_goal.enabled && upscale(value) == widget.daily_goal.intake),
                               drawVerticalLine: false,
                               horizontalInterval: downscale(100).toDouble(),
                               getDrawingHorizontalLine: (value) {
-                                if (widget.daily_goal.enabled && upscale(value) == widget.daily_goal.intake) {
-                                  return FlLine(
-                                    color: Colors.red,
-                                    strokeWidth: 4,
-                                  );
-                                }
-                                else {
-                                  return FlLine(strokeWidth: 0);
-                                }
+                                return HorizontalLine(
+                                  color: Colors.red,
+                                  strokeWidth: 4,
+                                  y: value
+                                );
                               }
                           ),
                         ),
