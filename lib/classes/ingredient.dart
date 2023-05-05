@@ -1,6 +1,10 @@
+import 'package:fitflow/classes/macronutrients.dart';
+
 class Ingredient {
   String name;
-  double cal; // calories per g
+  MacroNutrients nutrients;
 
-  Ingredient({ required this.name, required this.cal });
+  double get cpg => nutrients.cpg;
+
+  Ingredient({ required this.name, required this.nutrients });
 }

@@ -1,9 +1,33 @@
 import 'package:fitflow/classes/ingredient.dart';
+import 'package:fitflow/classes/macronutrients.dart';
+
+// TODO: fix proportions
 
 final List<Ingredient> IngredientsList = [
-  Ingredient(name: "Olio", cal: 9),
-  Ingredient(name: "Milk", cal: 0.64),
-  Ingredient(name: "Vinegar", cal: 0.12)
+  Ingredient(
+    name: "Olio",
+    nutrients: MacroNutrients(
+      carbohydrates: 0,
+      proteins: 0,
+      fats: 1
+    )
+  ),
+  Ingredient(
+    name: "Milk",
+    nutrients: MacroNutrients(
+      carbohydrates: 0.05,
+      proteins: 0.034,
+      fats: 0.01
+    )
+  ),
+  Ingredient(
+    name: "Vinegar",
+    nutrients: MacroNutrients(
+      carbohydrates: 0,
+      proteins: 0.02,
+      fats: 0.01
+    )
+  )
 ];
 
 final int SCALE_FACTOR = 50;

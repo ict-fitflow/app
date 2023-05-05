@@ -37,5 +37,5 @@ class PouringConfig {
 
   int get quantity => GramsList[_quantity];
   String get what => IngredientsList[_what].name;
-  double get calories => quantity * IngredientsList[_what].cal;
+  double get calories => quantity * IngredientsList[_what].cpg;
 }
