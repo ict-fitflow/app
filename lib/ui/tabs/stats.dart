@@ -51,7 +51,9 @@ class _StatsTabState extends State<StatsTab> {
               "Macro nutrients",
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            PieChartSample2(),
+            UserPieChart(
+              history: history,
+            ),
             space,
             Text(
               "History",

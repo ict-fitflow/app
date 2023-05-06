@@ -1,13 +1,6 @@
-import 'package:fitflow/classes/macronutrients.dart';
+import 'package:fitflow/classes/history.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
-class PieChartSample2 extends StatefulWidget {
-  const PieChartSample2({super.key});
-
-  @override
-  State<StatefulWidget> createState() => PieChart2State();
-}
 
 class PieChartColors {
 
@@ -17,8 +10,24 @@ class PieChartColors {
 
 }
 
-class PieChart2State extends State {
-  int touchedIndex = -1;
+class UserPieChart extends StatefulWidget {
+  UserHistory history;
+
+  UserPieChart({Key? key, required this.history}) : super(key: key);
+
+  @override
+  State<UserPieChart> createState() => _UserPieChartState();
+}
+
+class _UserPieChartState extends State<UserPieChart> {
+
+  late List<double> values;
+
+  @override
+  void initState() {
+    super.initState();
+    _prepare_chart_data();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +77,8 @@ class PieChart2State extends State {
   }
 
   List<PieChartSectionData> showingSections() {
+    double sum = values[0] + values[1] + values[2];
+    List<double> toshow = values.map((v) => v * 100 / sum).toList();
     return List.generate(3, (i) {
       const fontSize = 16.0;
       const radius = 100.0;
@@ -76,8 +87,8 @@ class PieChart2State extends State {
         case 0:
           return PieChartSectionData(
             color: PieChartColors.carbohydrates,
-            value: 40,
-            title: '40%',
+            value: toshow[i],
+            title: '${toshow[i].toInt()}%',
             radius: radius,
             titleStyle: const TextStyle(
               fontSize: fontSize,
@@ -89,8 +100,8 @@ class PieChart2State extends State {
         case 1:
           return PieChartSectionData(
             color: PieChartColors.protein,
-            value: 30,
-            title: '30%',
+            value: toshow[i],
+            title: '${toshow[i].toInt()}%',
             radius: radius,
             titleStyle: const TextStyle(
               fontSize: fontSize,
@@ -102,8 +113,8 @@ class PieChart2State extends State {
         case 2:
           return PieChartSectionData(
             color: PieChartColors.fats,
-            value: 30,
-            title: '30%',
+            value: toshow[i],
+            title: '${toshow[i].toInt()}%',
             radius: radius,
             titleStyle:  const TextStyle(
               fontSize: fontSize,
@@ -116,6 +127,20 @@ class PieChart2State extends State {
           throw Error();
       }
     });
+  }
+
+  void _prepare_chart_data() {
+    double cal_c = 0;
+    double cal_p = 0;
+    double cal_f = 0;
+
+    for (int d = 0; d < 7; d++) {
+      cal_c += widget.history.week_history[d].cal_carbohydrates;
+      cal_p += widget.history.week_history[d].cal_proteins;
+      cal_f += widget.history.week_history[d].cal_fats;
+    }
+    // TODO: fix that shit
+    values = [cal_c, cal_f, cal_p];
   }
 }
 

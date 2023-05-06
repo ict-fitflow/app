@@ -1,3 +1,4 @@
+import 'package:fitflow/classes/macronutrients.dart';
 import 'package:fitflow/classes/params.dart';
 
 class PouringConfig {
@@ -38,4 +39,5 @@ class PouringConfig {
   int get quantity => GramsList[_quantity];
   String get what => IngredientsList[_what].name;
   double get calories => quantity * IngredientsList[_what].cpg;
+  MacroNutrients get nutrients => IngredientsList[_what].nutrients;
 }
