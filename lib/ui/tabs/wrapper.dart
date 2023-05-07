@@ -1,4 +1,4 @@
 export 'pour.dart';
-export 'recipies.dart';
+export 'recipes.dart';
 export 'settings.dart';
 export 'stats.dart';

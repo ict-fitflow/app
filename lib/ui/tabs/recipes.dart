@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:fitflow/classes/recipe.dart';
 import 'package:fitflow/mocks/recipe.dart';
 import 'package:fitflow/ui/pages/recipe.dart';
+import 'package:fitflow/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class RecipeTab extends StatelessWidget {
@@ -31,13 +32,16 @@ class _RecipePageStfullState extends State<RecipePageStfull> {
     return ListView.builder(
       itemCount: recipes.length,
       itemBuilder: (context, index) {
-        return _OpenContainerWrapper(
-          transitionType: _transitionType,
-          closedBuilder: (BuildContext _, VoidCallback openContainer) {
-            return _RecipeCard(openContainer: openContainer, recipe: recipes[index]);
-          },
-          onClosed: (bool? isMarkedAsDone) => print('modal close'),
-          recipe: recipes[index]
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          child: _OpenContainerWrapper(
+              transitionType: _transitionType,
+              closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                return _RecipeCard(openContainer: openContainer, recipe: recipes[index]);
+              },
+              onClosed: (bool? isMarkedAsDone) => print('modal close'),
+              recipe: recipes[index]
+          ),
         );
       }
     );
@@ -56,36 +60,37 @@ class _RecipeCard extends StatelessWidget {
     return _InkWellOverlay(
       recipe: recipe,
       openContainer: openContainer,
-      height: 200,
+      height: 100,
       child: Card(
-        elevation: 5,
+        elevation: 0,
         child: SizedBox(
-          width: 300,
-          height: 200,
-          child: Column(
+          width: double.infinity,
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    recipe.name,
-                    style: Theme.of(context).textTheme.displaySmall
-                  )
-                )
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(recipe.difficulty.name),
-                    Text('${recipe.time} min')
-                  ],
-                ),
+              loadImage(recipe.path),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextMedium(recipe.name),
+                  TextSmall("+ 350 cal", color: Colors.lightGreen)
+                ],
               )
             ],
-          ),
+          )
         ),
       ),
+    );
+  }
+
+  Image loadImage(String path) {
+    return Image(
+      image: AssetImage(recipe.path),
+      fit: BoxFit.contain,
+      height: 100,
+      width: 100,
     );
   }
 }
