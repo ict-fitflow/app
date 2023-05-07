@@ -1,3 +1,4 @@
+import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/providers/settings.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/onboardingpage.dart';
@@ -37,6 +38,10 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => UserProvider(prefs: prefs),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BluetoothProvider(),
           lazy: false,
         )
       ],

@@ -31,7 +31,7 @@ class _UserBarChartState extends State<UserBarChart> {
   List<BarChartGroupData> showingBarGroups = [];
 
   int touchedGroupIndex = -1;
-  double maxY = KcalList.last;
+  double maxY = (KcalList.last).toDouble();
   late double maxY_opt;
 
   @override

@@ -1,3 +1,4 @@
+import 'package:fitflow/ui/modals/device_manager.dart';
 import 'package:fitflow/ui/tabs/wrapper.dart';
 import 'package:flutter/material.dart';
 
@@ -28,11 +29,14 @@ class _TabsPageState extends State<TabsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('FitFlow'),
-            Text('Device info')
+            const Text('FitFlow'),
+            IconButton(
+              onPressed: () => _open_devices_manager(context),
+              icon: const Icon(Icons.devices)
+            )
           ],
         ),
       ),
@@ -67,6 +71,13 @@ class _TabsPageState extends State<TabsPage> {
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  Future<void> _open_devices_manager(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => const DeviceManager()
     );
   }
 }
