@@ -87,7 +87,7 @@ class _RecipeCard extends StatelessWidget {
 
   Image loadImage(String path) {
     return Image(
-      image: AssetImage(recipe.path),
+      image: AssetImage(path),
       fit: BoxFit.contain,
       height: 100,
       width: 100,

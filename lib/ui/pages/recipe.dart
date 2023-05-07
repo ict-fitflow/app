@@ -1,4 +1,6 @@
 import 'package:fitflow/classes/recipe.dart';
+import 'package:fitflow/ui/charts/recipe_pie.dart';
+import 'package:fitflow/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class RecipePage extends StatefulWidget {
@@ -21,22 +23,25 @@ class _RecipePageState extends State<RecipePage> {
       body: Column(
         children: [
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          Center(
-            child: Text(
-              widget.recipe.name,
-              style: Theme.of(context).textTheme.displaySmall
+          SizedBox(
+            width: double.infinity,
+            height: 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                loadImage(widget.recipe.path),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextMedium(widget.recipe.name),
+                    TextSmall("+ 350 cal", color: Colors.lightGreen)
+                  ],
+                )
+              ],
             )
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(widget.recipe.difficulty.name),
-                Text('${widget.recipe.time} min')
-              ],
-            ),
-          ),
+          RecipePieChart(),
           Stepper(
             controlsBuilder: (BuildContext context, ControlsDetails details) {
               return Row(
@@ -107,6 +112,15 @@ class _RecipePageState extends State<RecipePage> {
           ),
         ],
       ),
+    );
+  }
+
+  Image loadImage(String path) {
+    return Image(
+      image: AssetImage(path),
+      fit: BoxFit.contain,
+      height: 100,
+      width: 100,
     );
   }
 }
