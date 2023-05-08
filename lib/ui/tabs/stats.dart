@@ -35,8 +35,6 @@ class _StatsTabState extends State<StatsTab> {
         _prepare_data();
 
         return ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          // mainAxisSize: MainAxisSize.max,
           children: [
             Text(
               "Calories",
@@ -63,7 +61,7 @@ class _StatsTabState extends State<StatsTab> {
             Column(
               children: user.history.getRange(0, min(5, user.history.length)).map((h) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1),
+                  padding: const EdgeInsets.symmetric(vertical: 1),
                   child: CardHistory(entry: h)
                 );
               }).toList()

@@ -78,7 +78,13 @@ class _UserPieChartState extends State<UserPieChart> {
 
   List<PieChartSectionData> showingSections() {
     double sum = values[0] + values[1] + values[2];
-    List<double> toshow = values.map((v) => v * 100 / sum).toList();
+    late List<double> toshow;
+    if (sum == 0) {
+      toshow = [100, 0, 0];
+    }
+    else {
+      toshow = values.map((v) => v * 100 / sum).toList();
+    }
     return List.generate(3, (i) {
       const fontSize = 16.0;
       const radius = 100.0;

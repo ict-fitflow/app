@@ -28,7 +28,7 @@ class UserHistory {
     int index = 0;
     weekday = DateTime.now().weekday - 1;
 
-    for (int d = weekday; d > 0; d--) {
+    for (int d = weekday; d >= 0; d--) {
       int diff_days = weekday - d;
       final now = DateTime.now();
       final diff = Duration(days: diff_days, hours: now.hour, minutes: now.minute);
