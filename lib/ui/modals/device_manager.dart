@@ -1,5 +1,6 @@
 import 'package:fitflow/providers/bluetooth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:provider/provider.dart';
 
 class DeviceManager extends StatefulWidget {
@@ -17,26 +18,29 @@ class _DeviceManagerState extends State<DeviceManager> {
   void initState() {
     super.initState();
     bluetooth = context.read<BluetoothProvider>();
-    bluetooth.scan();
+    _scan();
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<BluetoothProvider>(
       builder: (context, bluetooth, child) {
-        Widget content = (bluetooth.isEnabled == false) ? Icon(Icons.bluetooth_disabled) :
-          ListView.builder(
-            itemCount: bluetooth.results.length,
-            itemBuilder: (context, index) {
-              String? name = bluetooth.results[index].device.name;
-              String address = bluetooth.results[index].device.address;
+        Widget content = (bluetooth.isEnabled == false) ? const Icon(Icons.bluetooth_disabled) :
+          ListView(
+            children: bluetooth.results.map(
+              (dev) {
+                String? name = dev.device.name;
+                String address = dev.device.address;
 
-              String text = (name == null) ? address : name;
-              return ListTile(
-                onTap: () => print(text),
-                title: Text(text),
-              );
-            }
+                String text = (name == null) ? address : name;
+                return ListTile(
+                  onTap: () => _connect(dev),
+                  title: Text(text),
+                  leading: (dev.device.isConnected) ? Icon(Icons.bluetooth_connected) : Icon(Icons.bluetooth_disabled_outlined),
+                  minLeadingWidth : 10,
+                );
+              }
+            ).toList()
           );
 
         return AlertDialog(
@@ -45,6 +49,7 @@ class _DeviceManagerState extends State<DeviceManager> {
             children: [
               const Text('Device manager'),
               if (bluetooth.scanning) const CircularProgressIndicator()
+              else IconButton(onPressed: _scan, icon: const Icon(Icons.autorenew))
             ],
           ),
           content: Container(
@@ -65,5 +70,14 @@ class _DeviceManagerState extends State<DeviceManager> {
         );
       }
     );
+  }
+
+  _connect(BluetoothDiscoveryResult device) {
+    print(device);
+    bluetooth.connect(device.device.address);
+  }
+
+  void _scan() {
+    bluetooth.scan();
   }
 }

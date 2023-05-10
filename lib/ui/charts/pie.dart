@@ -86,7 +86,7 @@ class _UserPieChartState extends State<UserPieChart> {
       toshow = values.map((v) => v * 100 / sum).toList();
     }
     return List.generate(3, (i) {
-      const fontSize = 16.0;
+      const fontSize = 12.0;
       const radius = 100.0;
       const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
@@ -146,7 +146,7 @@ class _UserPieChartState extends State<UserPieChart> {
       cal_f += widget.history.week_history[d].cal_fats;
     }
     // TODO: fix that shit
-    values = [cal_c, cal_f, cal_p];
+    values = [cal_c, cal_p, cal_f];
   }
 }
 
@@ -181,7 +181,7 @@ class Indicator extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             color: textColor,
           ),
