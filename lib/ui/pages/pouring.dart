@@ -1,4 +1,5 @@
 import 'package:fitflow/classes/pouring_config.dart';
+import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,31 +13,33 @@ class PouringPage extends StatefulWidget {
 }
 
 class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin {
-  late AnimationController controller;
   late UserProvider userprofile;
+  late BluetoothProvider bluetooth;
+  late Stream<double> pour;
+  double pour_value = 0;
 
   @override
   void initState() {
     super.initState();
-    userprofile = context.read<UserProvider>();
-    int seconds = (widget.config.quantity / 100 * 10).toInt() + 1;
+    bluetooth = context.read<BluetoothProvider>();
+    pour = bluetooth.do_pour(widget.config);
 
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: seconds),
-    )..addListener(() {
-      setState(() {
-        if (controller.isCompleted) {
-          userprofile.add_pour(widget.config);
-        }
-      });
-    });
-    controller.forward();
+    userprofile = context.read<UserProvider>();
+
+    pour.listen(
+      (val) {
+        setState(() {
+          pour_value = val;
+        });
+      },
+      onDone: () => userprofile.add_pour(widget.config),
+      onError: (error) => print(error),
+    );
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    // TODO: something with the pour
     super.dispose();
   }
 
@@ -61,13 +64,13 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
                       width: 300,
                       height: 300,
                       child: CircularProgressIndicator(
-                          value: controller.value
+                          value: pour_value
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
-                      "${(controller.value * 100).toInt()}",
+                      "${(pour_value * 100).toInt()}",
                       style: Theme.of(context).textTheme.displaySmall
                     ),
                   ),

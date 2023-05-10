@@ -10,21 +10,32 @@ enum DeviceState { READY, POURING }
 
 class PourState {
   final PouringConfig config;
-  final List<double> _status = [];
+  late final StreamController<double> _stream;
   bool _finished = false;
 
-  PourState(this.config);
+  PourState(this.config) {
+    _stream = StreamController<double>(
+      onPause: () => print('Paused'),
+      onResume: () => print('Resumed'),
+      onCancel: () => print('Cancelled'),
+      onListen: () => print('Listens'),
+    );
+  }
 
   void add(double val) {
-    _status.add(val);
+    if (val >= 0 && val <= config.quantity) {
+      val = val / config.quantity;
+      _stream.add(val);
+    }
   }
 
   void finish() {
     _finished = true;
+    _stream.close();
   }
 
   bool get finished => _finished;
-  List<double> get status => _status;
+  Stream<double> get stream => _stream.stream;
 }
 
 class BluetoothProvider extends ChangeNotifier {
@@ -74,10 +85,15 @@ class BluetoothProvider extends ChangeNotifier {
     });
   }
 
+  void stop_scan() {
+    _streamSubscription!.cancel();
+  }
+
   void connect(String address) async {
     if (_device != null) return;
     try {
       _device = await BluetoothConnection.toAddress(address);
+      notifyListeners();
       print('Connected to the device');
 
       StreamSubscription stream = _device!.input!.listen(receive);
@@ -92,8 +108,6 @@ class BluetoothProvider extends ChangeNotifier {
         _device = null;
         notifyListeners();
       });
-
-      notifyListeners();
     }
     catch (exception) {
       print('Cannot connect, exception occured');
@@ -101,11 +115,12 @@ class BluetoothProvider extends ChangeNotifier {
     }
   }
 
-  void do_pour(PouringConfig config) {
+  Stream<double> do_pour(PouringConfig config) {
     pour = PourState(config);
     String payload = "pour ${config.quantity}";
     _device!.output.add(ascii.encode(payload));
     state = DeviceState.POURING;
+    return pour!.stream;
   }
 
   void receive(Uint8List data) {
@@ -121,11 +136,12 @@ class BluetoothProvider extends ChangeNotifier {
         }
         else {
           double val = double.parse(payload);
+          print(val);
           pour!.add(val);
         }
         break;
     }
-    print('Data incoming: ${payload}');
+    // print('Data incoming: ${payload}');
   }
 
   PourState? get pour_state => pour;

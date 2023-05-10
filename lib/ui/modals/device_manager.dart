@@ -22,6 +22,12 @@ class _DeviceManagerState extends State<DeviceManager> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    bluetooth.stop_scan();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<BluetoothProvider>(
       builder: (context, bluetooth, child) {
