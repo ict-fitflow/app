@@ -1,7 +1,10 @@
+import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/classes/recipe.dart';
+import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/ui/charts/recipe_pie.dart';
 import 'package:fitflow/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RecipePage extends StatefulWidget {
   Recipe recipe;
@@ -15,6 +18,15 @@ class _RecipePageState extends State<RecipePage> {
   int _index = 0;
   bool _can_continue = false;
   bool _finished = false;
+
+  double _pour_value = 0;
+  late BluetoothProvider bluetooth;
+
+  @override
+  void initState() {
+    super.initState();
+    bluetooth = context.read<BluetoothProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +85,12 @@ class _RecipePageState extends State<RecipePage> {
                 setState(() {
                   if (_can_continue) {
                     _index += 1;
+                    _can_continue = false;
                   }
-                  _can_continue = !_can_continue;
+                  else {
+                    _pour_value = 0;
+                    _start_pouring(widget.recipe.steps[_index].pour!);
+                  }
                 });
               },
               steps: _generate_steps()
@@ -82,6 +98,23 @@ class _RecipePageState extends State<RecipePage> {
           )
         ],
       ),
+    );
+  }
+
+  void _start_pouring(PouringConfig config) {
+
+    Stream<double> pour = bluetooth.do_pour(config);
+
+    pour.listen(
+      (val) {
+        setState(() {
+          _pour_value = val;
+        });
+      },
+      onDone: () => setState(() {
+        _can_continue = true;
+      }),
+      onError: (error) => print(error),
     );
   }
 
@@ -95,7 +128,7 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   Widget _controls_builder(BuildContext context, ControlsDetails details) {
-    print(Theme.of(context).colorScheme.primary);
+
     if (widget.recipe.steps[_index].pour == null) {
       _can_continue = true;
     }
@@ -129,12 +162,14 @@ class _RecipePageState extends State<RecipePage> {
   List<Step> _generate_steps() {
     return widget.recipe.steps.map((step) {
       int index = widget.recipe.steps.indexOf(step);
-      late Widget? content;
-      if (step.pour != null) {
-        content = Text("${step.pour!.what} ${step.pour!.quantity}");
-      }
-      else {
-        content = null;
+      Widget? content;
+      if (step.pour != null && _can_continue == false) {
+        // content = Text("${step.pour!.what} ${step.pour!.quantity}");
+        content = LinearProgressIndicator(
+          value: _pour_value,
+          color: Colors.green,
+          backgroundColor: Colors.green.withOpacity(0.4),
+        );
       }
       return Step(
         isActive: (index < _index || _finished) ? true : false,
