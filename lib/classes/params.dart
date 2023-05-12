@@ -27,6 +27,22 @@ final List<Ingredient> IngredientsList = [
       proteins: 0.02,
       fats: 0.01
     )
+  ),
+  Ingredient(
+    name: "Coffee",
+    nutrients: MacroNutrients(
+      carbohydrates: 1.67 / 100,
+      proteins: 0.12 /100,
+      fats: 0.18 / 100
+    )
+  ),
+  Ingredient(
+    name: "Water",
+    nutrients: MacroNutrients(
+      carbohydrates: 0,
+      proteins: 0,
+      fats: 0
+    )
   )
 ];
 

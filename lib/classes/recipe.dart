@@ -10,11 +10,11 @@ class Recipe {
 
   String name;
   RecipeDifficulty difficulty;
-  int time;
+  int cal;
   List<Step> steps;
   late String path;
 
-  Recipe(this.name, this.difficulty, this.time, String image, this.steps) {
+  Recipe(this.name, this.difficulty, this.cal, String image, this.steps) {
     path = "assets/recipes/$image";
   }
 }
