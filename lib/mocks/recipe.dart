@@ -6,8 +6,11 @@ final List<Recipe> recipes = [
   Recipe(
       "Banana Nut", RecipeDifficulty.hard, 5, "1.png",
       [
-        Step("Aggiungiamo qualcosa", "bla bla bal", PouringConfig(5, 2)),
-        Step("Mescoliamo per bene", "bla", null)
+        Step("1 scoop chocolate protein powder", "", null),
+        Step("1 banana", "", null),
+        Step("125 ml unsweetened vanilla almond milk", "", PouringConfig(125, 1)),
+        Step("125 ml unsweetened vanilla cashew milk", "", PouringConfig(125, 1)),
+        Step("1 tbsp almond butter", "", null)
       ]
   ),
   Recipe(

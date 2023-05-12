@@ -13,6 +13,8 @@ class RecipePage extends StatefulWidget {
 
 class _RecipePageState extends State<RecipePage> {
   int _index = 0;
+  bool _can_continue = false;
+  bool _finished = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,74 +44,42 @@ class _RecipePageState extends State<RecipePage> {
             )
           ),
           RecipePieChart(),
-          Stepper(
-            controlsBuilder: (BuildContext context, ControlsDetails details) {
-              return Row(
-                children: <Widget>[
-                  TextButton(
-                    onPressed: details.onStepContinue,
-                    child: const Text('Continue'),
-                  ),
-                  TextButton(
-                    onPressed: details.onStepCancel,
-                    child: const Text('Cancel'),
-                  ),
-                ],
-              );
-            },
-            currentStep: _index,
-            onStepCancel: () {
-              if (_index > 0) {
+          Theme(
+            data: ThemeData(
+              colorScheme: Theme.of(context).colorScheme.copyWith(
+                primary: Colors.green,
+                secondary: Colors.red,
+                background: Colors.red,
+              ),
+            ),
+            child: Stepper(
+              connectorThickness: 2,
+              controlsBuilder: _controls_builder,
+              currentStep: _index,
+              onStepCancel: () {
+                if (_index > 0) {
+                  setState(() {
+                    _index -= 1;
+                  });
+                }
+              },
+              onStepContinue: () {
+                if (widget.recipe.steps.length - 1 == _index) {
+                  setState(() {
+                    _finished = true;
+                  });
+                  return;
+                };
                 setState(() {
-                  _index -= 1;
+                  if (_can_continue) {
+                    _index += 1;
+                  }
+                  _can_continue = !_can_continue;
                 });
-              }
-            },
-            onStepContinue: () {
-              if (_index <= 0) {
-                setState(() {
-                  _index += 1;
-                });
-              }
-            },
-            onStepTapped: (int index) {
-              setState(() {
-                // _index = index;
-              });
-            },
-            steps: widget.recipe.steps.map((step) {
-              late Widget content;
-              if (step.pour != null) {
-                content = Text("${step.pour!.what} ${step.pour!.quantity}");
-              }
-              else {
-                content = Text('nothing to show');
-              }
-              return Step(
-                title: Text(step.name),
-                content: Container(
-                    alignment: Alignment.centerLeft,
-                    child: content
-                )
-              );
-            }).toList()
-            // <Step>[
-            //   Step(
-            //     title: const Text('Step 1 title'),
-            //     content: Container(
-            //       alignment: Alignment.centerLeft,
-            //       child: const Text('Content for Step 1')
-            //     ),
-            //   ),
-            //   Step(
-            //     title: const Text('Step 2 title'),
-            //     content: Container(
-            //         alignment: Alignment.centerLeft,
-            //         child: const Text('Content for Step 2')
-            //     ),
-            //   ),
-            // ],
-          ),
+              },
+              steps: _generate_steps()
+            ),
+          )
         ],
       ),
     );
@@ -122,5 +92,59 @@ class _RecipePageState extends State<RecipePage> {
       height: 100,
       width: 100,
     );
+  }
+
+  Widget _controls_builder(BuildContext context, ControlsDetails details) {
+    print(Theme.of(context).colorScheme.primary);
+    if (widget.recipe.steps[_index].pour == null) {
+      _can_continue = true;
+    }
+
+    String btn_continue = "Start pour";
+    if (_can_continue) {
+      btn_continue = "Continue";
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        ElevatedButton(
+          onPressed: details.onStepCancel,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: details.onStepContinue,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green
+          ),
+          child: Text(btn_continue),
+        ),
+      ],
+    );
+  }
+
+  List<Step> _generate_steps() {
+    return widget.recipe.steps.map((step) {
+      int index = widget.recipe.steps.indexOf(step);
+      late Widget? content;
+      if (step.pour != null) {
+        content = Text("${step.pour!.what} ${step.pour!.quantity}");
+      }
+      else {
+        content = null;
+      }
+      return Step(
+        isActive: (index < _index || _finished) ? true : false,
+        title: Text(step.name),
+        content: Container(
+          alignment: Alignment.centerLeft,
+          child: content
+        ),
+        state: (index < _index || _finished) ? StepState.complete : StepState.indexed
+      );
+    }).toList();
   }
 }

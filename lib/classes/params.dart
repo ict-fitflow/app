@@ -32,6 +32,6 @@ final List<Ingredient> IngredientsList = [
 
 final int SCALE_FACTOR = 50;
 
-final List GramsList = List<int>.generate(100, (i) => i + 1);
+final List GramsList = List<int>.generate(300, (i) => i + 1);
 
 final List KcalList = List<int>.generate(30, (i) => i * SCALE_FACTOR);
