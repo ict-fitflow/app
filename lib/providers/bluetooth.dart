@@ -89,8 +89,8 @@ class BluetoothProvider extends ChangeNotifier {
     _streamSubscription!.cancel();
   }
 
-  void connect(String address) async {
-    if (_device != null) return;
+  Future<bool> connect(String address) async {
+    if (_device != null) return false;
     try {
       _device = await BluetoothConnection.toAddress(address);
       notifyListeners();
@@ -108,10 +108,12 @@ class BluetoothProvider extends ChangeNotifier {
         _device = null;
         notifyListeners();
       });
+      return true;
     }
     catch (exception) {
       print('Cannot connect, exception occured');
       _device = null;
+      return false;
     }
   }
 

@@ -6,9 +6,10 @@ class User {
 
   List<PourHistory> history;
   List<PouringConfig> custom_config;
+  Set<String> bluetooth_devices;
   DailyGoal goal;
 
-  User({ required this.history, required this.custom_config, required this.goal });
+  User({ required this.history, required this.custom_config, required this.goal, required this.bluetooth_devices });
 
   factory User.fromJSON(Map<String, dynamic> json) {
     List<PourHistory> history = (json['history'] as List<dynamic>).map((c) => PourHistory.fromJSON(c)).toList();
@@ -17,14 +18,16 @@ class User {
     return User(
       history: history,
       custom_config: custom_config,
-      goal: DailyGoal.fromJSON(json['daily_goal'])
+      goal: DailyGoal.fromJSON(json['daily_goal']),
+      bluetooth_devices: json['bluetooth_devices']
     );
   }
 
   Map<String, dynamic> toJson() => {
     'history': history,
     'custom_config': custom_config,
-    'daily_goal': goal
+    'daily_goal': goal,
+    'bluetooth_devices': bluetooth_devices
   };
 
   @override
