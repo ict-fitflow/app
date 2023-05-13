@@ -42,7 +42,7 @@ class _RecipePieChartState extends State<RecipePieChart> {
                 show: false,
               ),
               sectionsSpace: 0,
-              centerSpaceRadius: 0,
+              centerSpaceRadius: 20,
               sections: showingSections(),
               startDegreeOffset: -90
             ),
@@ -50,7 +50,7 @@ class _RecipePieChartState extends State<RecipePieChart> {
         ),
         Indicator(
           color: PieChartColors.carbohydrates,
-          text: 'Carbohydrates'
+          text: 'Carbo'
         ),
         Indicator(
           color: PieChartColors.protein,
@@ -68,7 +68,7 @@ class _RecipePieChartState extends State<RecipePieChart> {
     double sum = values[0] + values[1] + values[2];
     List<double> toshow = values.map((v) => v * 100 / sum).toList();
     return List.generate(3, (i) {
-      const radius = 25.0;
+      const radius = 6.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -121,21 +121,21 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color,
-          ),
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color.withOpacity(0.5),
         ),
-        const SizedBox(
-          width: 4,
+        child: Column(
+          children: <Widget>[
+            TextTiny(text),
+            TextMedium("56%")
+          ],
         ),
-        TextSmall(text)
-      ],
+      )
     );
   }
 }

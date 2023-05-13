@@ -22,6 +22,8 @@ class _RecipePageState extends State<RecipePage> {
   double _pour_value = 0;
   late BluetoothProvider bluetooth;
 
+  bool _visible = true;
+
   @override
   void initState() {
     super.initState();
@@ -30,74 +32,119 @@ class _RecipePageState extends State<RecipePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Recipe details"),
       ),
-      body: Column(
+      body: Stack(
+        alignment: Alignment.center,
         children: [
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          SizedBox(
-            width: double.infinity,
-            height: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                loadImage(widget.recipe.path),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          ListView(
+            children: [
+              Visibility(
+                // TODO: put fadeout
+                visible: _visible,
+                child: Column(
                   children: [
-                    TextMedium(widget.recipe.name),
-                    TextSmall("+ 350 cal", color: Colors.lightGreen)
+                    Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: SizedBox(
+                            width: double.infinity,
+                            height: 100,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                loadImage(widget.recipe.path),
+                                const Padding(padding: EdgeInsets.only(left: 20)),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextMedium(widget.recipe.name),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextLarge("${widget.recipe.cal}", color: Colors.lightGreen),
+                                        const TextSmall(" Kcal", color: Colors.lightGreen)
+                                      ],
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                        )
+                    ),
+                    RecipePieChart()
                   ],
                 )
-              ],
-            )
+              ),
+              Theme(
+                data: ThemeData(
+                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                    primary: Colors.green,
+                    secondary: Colors.red,
+                    background: Colors.red,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Stepper(
+                      physics: const NeverScrollableScrollPhysics(),
+                      margin: EdgeInsets.zero,
+                      connectorThickness: 2,
+                      controlsBuilder: _controls_builder,
+                      currentStep: _index,
+                      onStepCancel: _step_cancel,
+                      onStepContinue: _step_continue,
+                      steps: _generate_steps()
+                    ),
+                    const Padding(padding: EdgeInsets.only(bottom: 100))
+                  ],
+                )
+              ),
+            ],
           ),
-          RecipePieChart(),
-          Theme(
-            data: ThemeData(
-              colorScheme: Theme.of(context).colorScheme.copyWith(
-                primary: Colors.green,
-                secondary: Colors.red,
-                background: Colors.red,
+          Visibility(
+            visible: _visible,
+            child: Positioned(
+              bottom: 10,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 80 / 100,
+                child: ElevatedButton(
+                    onPressed: _prepare_it,
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                    ),
+                    child: const TextMedium("Prepare it")
+                ),
               ),
             ),
-            child: Stepper(
-              connectorThickness: 2,
-              controlsBuilder: _controls_builder,
-              currentStep: _index,
-              onStepCancel: () {
-                if (_index > 0) {
-                  setState(() {
-                    _index -= 1;
-                  });
-                }
-              },
-              onStepContinue: () {
-                if (widget.recipe.steps.length - 1 == _index) {
-                  setState(() {
-                    _finished = true;
-                  });
-                  return;
-                };
-                setState(() {
-                  if (_can_continue) {
-                    _index += 1;
-                    _can_continue = false;
-                  }
-                  else {
-                    _pour_value = 0;
-                    _start_pouring(widget.recipe.steps[_index].pour!);
-                  }
-                });
-              },
-              steps: _generate_steps()
+          ),
+          Visibility(
+            visible: !_visible,
+            child: Positioned(
+              bottom: 10,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 80 / 100,
+                child: ElevatedButton(
+                    onPressed: _prepare_it,
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: const EdgeInsets.all(20),
+                    ),
+                    child: const TextMedium("Stop it")
+                ),
+              ),
             ),
-          )
+          ),
         ],
-      ),
+      )
     );
   }
 
@@ -137,6 +184,11 @@ class _RecipePageState extends State<RecipePage> {
     if (_can_continue) {
       btn_continue = "Continue";
     }
+    return Container(
+      height: 0,
+      width: 0,
+    );
+    // TODO: put back them when entering in prepare mode
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,6 +223,7 @@ class _RecipePageState extends State<RecipePage> {
           backgroundColor: Colors.green.withOpacity(0.4),
         );
       }
+      content = null;
       return Step(
         isActive: (index < _index || _finished) ? true : false,
         title: Text(step.name),
@@ -181,5 +234,38 @@ class _RecipePageState extends State<RecipePage> {
         state: (index < _index || _finished) ? StepState.complete : StepState.indexed
       );
     }).toList();
+  }
+
+  void _step_cancel() {
+    if (_index > 0) {
+      setState(() {
+        _index -= 1;
+      });
+    }
+  }
+
+  void _step_continue() {
+    if (widget.recipe.steps.length - 1 == _index) {
+      setState(() {
+        _finished = true;
+      });
+      return;
+    };
+    setState(() {
+      if (_can_continue) {
+        _index += 1;
+        _can_continue = false;
+      }
+      else {
+        _pour_value = 0;
+        _start_pouring(widget.recipe.steps[_index].pour!);
+      }
+    });
+  }
+
+  void _prepare_it() {
+    setState(() {
+      _visible = !_visible;
+    });
   }
 }
