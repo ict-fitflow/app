@@ -1,8 +1,6 @@
 import 'package:fitflow/classes/ingredient.dart';
 import 'package:fitflow/classes/macronutrients.dart';
 
-// TODO: fix proportions
-
 final List<Ingredient> IngredientsList = [
   Ingredient(
     name: "Olio",
