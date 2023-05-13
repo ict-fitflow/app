@@ -27,7 +27,7 @@ class User {
     'history': history,
     'custom_config': custom_config,
     'daily_goal': goal,
-    'bluetooth_devices': bluetooth_devices
+    'bluetooth_devices': bluetooth_devices.toList()
   };
 
   @override
