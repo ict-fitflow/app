@@ -12,9 +12,7 @@ import 'package:fitflow/ui/pages/tabs.dart';
 
 late SharedPreferences prefs;
 
-// select the page to show
-// if is the first time the customer use the app
-// he will see the OnBoardingPage
+// select the page to show if is the first time the customer use the app he will see the OnBoardingPage
 Widget entryPoint() {
   late Widget entryPoint;
   if (prefs.containsKey('firstTime') == false) {

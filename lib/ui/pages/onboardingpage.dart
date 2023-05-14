@@ -31,31 +31,39 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       ),
     );
 
-    return IntroductionScreen(
-      globalBackgroundColor: Colors.white,
-      key: introKey,
-      pages: [
-        PageViewModel(
+    return SafeArea(
+      child: IntroductionScreen(
+        globalBackgroundColor: Colors.white,
+        key: introKey,
+        pages: [
+          PageViewModel(
             title: "Welcome on FitFlow",
-            body: "Let's begin with a little tutorial",
-            // image: _buildImage('intro1.png'),
+            body: "A healthy choice has never been easier",
+            image: _buildImage('intro/1.png'),
             decoration: pageDecoration
-        )
-      ],
-      onDone: () => _onIntroEnd(context),
-      onSkip: () => _onIntroEnd(context),
-      showSkipButton: true,
-      skipOrBackFlex: 0,
-      nextFlex: 0,
-      back: const Icon(Icons.arrow_back),
-      skip: const Text('Skip'),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('Start!'),
-      curve: Curves.fastLinearToSlowEaseIn,
-      controlsMargin: const EdgeInsets.all(16),
-      controlsPadding: kIsWeb
-          ? const EdgeInsets.all(12.0)
-          : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          ),
+          PageViewModel(
+            title: "Pouring made simple",
+            body: "Let's start with a quick tutorial",
+            image: _buildImage('intro/2.png'),
+            decoration: pageDecoration
+          )
+        ],
+        onDone: () => _onIntroEnd(context),
+        onSkip: () => _onIntroEnd(context),
+        showSkipButton: true,
+        skipOrBackFlex: 0,
+        nextFlex: 0,
+        back: const Icon(Icons.arrow_back),
+        skip: const Text('Skip'),
+        next: const Icon(Icons.arrow_forward),
+        done: const Text('Start!'),
+        curve: Curves.fastLinearToSlowEaseIn,
+        controlsMargin: const EdgeInsets.all(16),
+        controlsPadding: kIsWeb
+            ? const EdgeInsets.all(12.0)
+            : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+      )
     );
   }
 
@@ -67,12 +75,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   // load image from memory
   Widget _buildImage(String assetName) {
-    return Image.asset(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Image.asset(
         'assets/$assetName',
-        fit: BoxFit.fitHeight,
+        fit: BoxFit.fitHeight, // TODO: change
         height: double.infinity,
         width: double.infinity,
         alignment: Alignment.center
+      )
     );
   }
 }
