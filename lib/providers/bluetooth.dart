@@ -122,6 +122,7 @@ class BluetoothProvider extends ChangeNotifier {
   Future<bool> disconnect() async {
     if (_device == null) return false;
     await _device!.finish();
+    notifyListeners();
     return true;
   }
 

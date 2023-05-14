@@ -22,10 +22,19 @@ class _TabsPageState extends State<TabsPage> {
     SettingsTab()
   ];
 
+  bool _is_connected = false;
+
   @override
   void initState() {
     super.initState();
     bluetooth = context.read<BluetoothProvider>();
+    bluetooth.addListener(_bluetooth_changes);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bluetooth.removeListener(_bluetooth_changes);
   }
 
 
@@ -40,7 +49,7 @@ class _TabsPageState extends State<TabsPage> {
             IconButton(
               onPressed: () => _open_devices_manager(context),
               icon: Badge(
-                backgroundColor: bluetooth.isConnected ? Colors.green : Colors.red,
+                backgroundColor: _is_connected ? Colors.green : Colors.red,
                 child: const Icon(Icons.devices),
               )
             ),
@@ -92,5 +101,12 @@ class _TabsPageState extends State<TabsPage> {
       context: context,
       builder: (BuildContext context) => const DeviceManager()
     );
+  }
+
+  void _bluetooth_changes() {
+    setState(() {
+      _is_connected = bluetooth.isConnected;
+      print(_is_connected);
+    });
   }
 }
