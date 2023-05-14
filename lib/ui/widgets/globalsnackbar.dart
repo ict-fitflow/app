@@ -3,16 +3,13 @@ import 'package:flutter/material.dart';
 class GlobalSnackbar {
   static final key = GlobalKey<ScaffoldMessengerState>();
 
-  static showMessage(String text) {
-    final snackBar = SnackBar(
-        content: Text(text)
-    );
-    key.currentState?.showSnackBar(snackBar);
-  }
-
   static showSuccess(String text) {
     final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
       content: Text(text),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       backgroundColor: Colors.green,
     );
     key.currentState?.showSnackBar(snackBar);
@@ -20,7 +17,11 @@ class GlobalSnackbar {
 
   static showError(String text) {
     final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
       content: Text(text),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       backgroundColor: Colors.red,
     );
     key.currentState?.showSnackBar(snackBar);
