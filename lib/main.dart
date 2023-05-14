@@ -3,6 +3,7 @@ import 'package:fitflow/providers/settings.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/onboardingpage.dart';
 import 'package:fitflow/ui/pages/splashscreen.dart';
+import 'package:fitflow/ui/widgets/globalsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +65,7 @@ class FitFlowApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme:  ThemeData.dark(),
           themeMode: settings.darkTheme ? ThemeMode.dark : ThemeMode.light,
+          scaffoldMessengerKey: GlobalSnackbar.key,
           home: entryPoint(),
         );
       }
