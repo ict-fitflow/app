@@ -1,8 +1,10 @@
 import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/pouring_config.dart';
+import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/manage_timer.dart';
 import 'package:fitflow/ui/pages/pouring.dart';
+import 'package:fitflow/ui/widgets/globalsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,13 @@ class PourTab extends StatefulWidget {
 class _PourTabState extends State<PourTab> {
   PouringConfig current = PouringConfig(20, 0);
   late Picker mypicker;
+  late BluetoothProvider bluetooth;
+
+  @override
+  void initState() {
+    super.initState();
+    bluetooth = context.read<BluetoothProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +41,8 @@ class _PourTabState extends State<PourTab> {
           isArray: true
       ),
       hideHeader: true,
-      // delimiter: [
-      //   PickerDelimiter(
-      //       child: Container(
-      //         width: 30.0,
-      //         alignment: Alignment.center,
-      //         child: Icon(Icons.more_vert),
-      //       ))
-      // ],
       title: const Text("Please Select"),
-      selectedTextStyle: TextStyle(color: Colors.blue),
+      selectedTextStyle: const TextStyle(color: Colors.blue),
       onSelect: (Picker picker, int c, List<int> value) {
         current.setConfig(value);
       }
@@ -94,7 +95,6 @@ class _PourTabState extends State<PourTab> {
                         ),
                       ),
                     );
-                    // const Padding(padding: EdgeInsets.symmetric(vertical: 3)),
                   }
                 );
               }
@@ -133,8 +133,13 @@ class _PourTabState extends State<PourTab> {
   }
 
   void startPouring() {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => PouringPage(config: current))
-    );
+    if (bluetooth.isConnected) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PouringPage(config: current))
+      );
+    }
+    else {
+      GlobalSnackbar.showError("Connect a device");
+    }
   }
 }

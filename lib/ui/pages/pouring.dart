@@ -1,6 +1,7 @@
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/providers/user.dart';
+import 'package:fitflow/ui/widgets/globalsnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,14 +33,18 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
           pour_value = val;
         });
       },
-      onDone: () => userprofile.add_pour(widget.config),
-      onError: (error) => print(error),
+      onDone: () {
+        userprofile.add_pour(widget.config);
+        GlobalSnackbar.showSuccess("Well done!");
+      },
+      onError: (error) {
+        GlobalSnackbar.showError("Something went wrong");
+      },
     );
   }
 
   @override
   void dispose() {
-    // TODO: something with the pour
     super.dispose();
   }
 
@@ -63,9 +68,7 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
                     child: Container(
                       width: 300,
                       height: 300,
-                      child: CircularProgressIndicator(
-                          value: pour_value
-                      ),
+                      child: CircularProgressIndicator(value: pour_value),
                     ),
                   ),
                   Center(

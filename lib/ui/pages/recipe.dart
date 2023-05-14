@@ -1,7 +1,7 @@
-import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/classes/recipe.dart';
 import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/ui/charts/recipe_pie.dart';
+import 'package:fitflow/ui/widgets/globalsnackbar.dart';
 import 'package:fitflow/ui/widgets/stepper.dart';
 import 'package:fitflow/ui/widgets/text.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,13 @@ class RecipePage extends StatefulWidget {
 class _RecipePageState extends State<RecipePage> {
 
   bool _visible = true;
+  late BluetoothProvider bluetooth;
+
+  @override
+  void initState() {
+    super.initState();
+    bluetooth = context.read<BluetoothProvider>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,32 +44,32 @@ class _RecipePageState extends State<RecipePage> {
                 child: Column(
                   children: [
                     Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: SizedBox(
-                            width: double.infinity,
-                            height: 100,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                      padding: const EdgeInsets.all(20),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            loadImage(widget.recipe.path),
+                            const Padding(padding: EdgeInsets.only(left: 20)),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                loadImage(widget.recipe.path),
-                                const Padding(padding: EdgeInsets.only(left: 20)),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                TextMedium(widget.recipe.name),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    TextMedium(widget.recipe.name),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        TextLarge("${widget.recipe.cal}", color: Colors.lightGreen),
-                                        const TextSmall(" Kcal", color: Colors.lightGreen)
-                                      ],
-                                    )
+                                    TextLarge("${widget.recipe.cal}", color: Colors.lightGreen),
+                                    const TextSmall(" Kcal", color: Colors.lightGreen)
                                   ],
                                 )
                               ],
                             )
+                          ],
                         )
+                      )
                     ),
                     RecipePieChart()
                   ],
@@ -170,8 +177,13 @@ class _RecipePageState extends State<RecipePage> {
 
 
   void _prepare_it() {
-    setState(() {
-      _visible = !_visible;
-    });
+    if (bluetooth.isConnected) {
+      setState(() {
+        _visible = !_visible;
+      });
+    }
+    else {
+      GlobalSnackbar.showError("Connect to a device before");
+    }
   }
 }

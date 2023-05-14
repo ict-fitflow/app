@@ -49,14 +49,14 @@ class _SettingsTabState extends State<SettingsTab> {
               ),
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 4
-                ),
-                child: Text(
-                  "Daily goals",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                )
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 4
+              ),
+              child: Text(
+                "Daily goals",
+                style: Theme.of(context).textTheme.headlineSmall,
+              )
             ),
             ListTile(
               leading: const Icon(Icons.calendar_month),

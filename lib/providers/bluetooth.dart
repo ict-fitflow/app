@@ -45,7 +45,7 @@ class BluetoothProvider extends ChangeNotifier {
   bool _isEnabled = false;
   BluetoothConnection? _device;
   DeviceState state = DeviceState.READY;
-  PourState? pour;
+  PourState? _pour;
 
   late FlutterBluetoothSerial instance;
   StreamSubscription<BluetoothDiscoveryResult>? _streamSubscription;
@@ -118,11 +118,11 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   Stream<double> do_pour(PouringConfig config) {
-    pour = PourState(config);
+    _pour = PourState(config);
     String payload = "pour ${config.quantity}";
     _device!.output.add(ascii.encode(payload));
     state = DeviceState.POURING;
-    return pour!.stream;
+    return _pour!.stream;
   }
 
   void receive(Uint8List data) {
@@ -133,22 +133,23 @@ class BluetoothProvider extends ChangeNotifier {
         break;
       case DeviceState.POURING:
         if (payload == "STOP") {
-          pour!.finish();
+          _pour!.finish();
           state = DeviceState.READY;
         }
         else {
           double val = double.parse(payload);
           print(val);
-          pour!.add(val);
+          _pour!.add(val);
         }
         break;
     }
     // print('Data incoming: ${payload}');
   }
 
-  PourState? get pour_state => pour;
+  PourState? get pour_state => _pour;
   bool get scanning => _scanning;
-  get isEnabled => _isEnabled;
+  bool get isEnabled => _isEnabled;
+  bool get isConnected => (_device != null) ? true : false;
 
 }
 

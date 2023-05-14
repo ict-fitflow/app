@@ -1,6 +1,8 @@
+import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/ui/modals/device_manager.dart';
 import 'package:fitflow/ui/tabs/wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TabsPage extends StatefulWidget {
   const TabsPage({super.key});
@@ -11,6 +13,7 @@ class TabsPage extends StatefulWidget {
 
 class _TabsPageState extends State<TabsPage> {
   int _selectedIndex = 0;
+  late BluetoothProvider bluetooth;
 
   static const List<Widget> _widgetOptions = <Widget>[
     PourTab(),
@@ -19,11 +22,12 @@ class _TabsPageState extends State<TabsPage> {
     SettingsTab()
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    bluetooth = context.read<BluetoothProvider>();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +39,11 @@ class _TabsPageState extends State<TabsPage> {
             const Text('FitFlow'),
             IconButton(
               onPressed: () => _open_devices_manager(context),
-              icon: const Icon(Icons.devices)
-            )
+              icon: Badge(
+                backgroundColor: bluetooth.isConnected ? Colors.green : Colors.red,
+                child: const Icon(Icons.devices),
+              )
+            ),
           ],
         ),
       ),
@@ -72,6 +79,12 @@ class _TabsPageState extends State<TabsPage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   Future<void> _open_devices_manager(BuildContext context) async {

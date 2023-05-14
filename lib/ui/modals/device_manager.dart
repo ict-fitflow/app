@@ -46,6 +46,7 @@ class _DeviceManagerState extends State<DeviceManager> {
             paired.add(
               ListTile(
                 horizontalTitleGap: 10,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: () => _connect(dev),
                 title: Text(text),
                 leading: (dev.device.isConnected) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
@@ -58,7 +59,8 @@ class _DeviceManagerState extends State<DeviceManager> {
           else {
             unpaired.add(
               ListTile(
-              horizontalTitleGap: 10,
+                horizontalTitleGap: 10,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: () => _connect(dev),
                 title: Text(text),
                 leading: (dev.device.isConnected) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
@@ -83,8 +85,7 @@ class _DeviceManagerState extends State<DeviceManager> {
           content: Container(
               height: 300,
               width: MediaQuery.of(context).size.width * 0.8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
                   const TextSmall("Paired device"),
                   Container(
