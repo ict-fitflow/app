@@ -19,7 +19,7 @@ class User {
       history: history,
       custom_config: custom_config,
       goal: DailyGoal.fromJSON(json['daily_goal']),
-      bluetooth_devices: json['bluetooth_devices']
+      bluetooth_devices: Set.from(json['bluetooth_devices'])
     );
   }
 
