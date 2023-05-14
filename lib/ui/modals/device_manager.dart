@@ -49,7 +49,7 @@ class _DeviceManagerState extends State<DeviceManager> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: () => _connect(dev),
                 title: Text(text),
-                leading: (dev.device.isConnected) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
+                leading: (bluetooth.isConnected && bluetooth.device_address == dev.device.address) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
                 minLeadingWidth : 2,
                 dense: true,
                 visualDensity: const VisualDensity(vertical: 0, horizontal: -2)
@@ -63,7 +63,7 @@ class _DeviceManagerState extends State<DeviceManager> {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: () => _connect(dev),
                 title: Text(text),
-                leading: (dev.device.isConnected) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
+                leading: const Icon(Icons.bluetooth_disabled_outlined),
                 minLeadingWidth : 2,
                 dense: true,
                 visualDensity: const VisualDensity(vertical: 0, horizontal: -2)
@@ -122,7 +122,10 @@ class _DeviceManagerState extends State<DeviceManager> {
   }
 
   _connect(BluetoothDiscoveryResult device) async {
-    print(device);
+    if (bluetooth.isConnected) {
+      await bluetooth.disconnect();
+    }
+    print(bluetooth.isConnected);
     bool toadd = await bluetooth.connect(device.device.address);
     if (toadd) {
       user.add_bluetooth_device(device.device.address);
