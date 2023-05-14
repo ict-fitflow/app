@@ -2,6 +2,7 @@ import 'package:fitflow/providers/bluetooth.dart';
 import 'package:fitflow/providers/settings.dart';
 import 'package:fitflow/providers/user.dart';
 import 'package:fitflow/ui/pages/onboardingpage.dart';
+import 'package:fitflow/ui/pages/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +46,7 @@ void main() async {
           lazy: false,
         )
       ],
-      child: const FitFlowApp(),
+      child: const SplashScreen(nextPage: FitFlowApp()),
     )
   );
 }
