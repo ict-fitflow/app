@@ -75,7 +75,7 @@ class _RecipeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextMedium(recipe.name),
-                  TextSmall("${recipe.cal} Kcal", color: Colors.lightGreen)
+                  TextSmall("${recipe.nutrients.cpg.toInt()} Kcal", color: Colors.lightGreen)
                 ],
               )
             ],

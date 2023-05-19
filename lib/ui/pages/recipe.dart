@@ -60,7 +60,7 @@ class _RecipePageState extends State<RecipePage> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    TextLarge("${widget.recipe.cal}", color: Colors.lightGreen),
+                                    TextLarge("${widget.recipe.nutrients.cpg.toInt()}", color: Colors.lightGreen),
                                     const TextSmall(" Kcal", color: Colors.lightGreen)
                                   ],
                                 )
@@ -70,7 +70,7 @@ class _RecipePageState extends State<RecipePage> {
                         )
                       )
                     ),
-                    RecipePieChart()
+                    RecipePieChart(nutrients: widget.recipe.nutrients)
                   ],
                 )
               ),

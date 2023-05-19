@@ -1,3 +1,4 @@
+import 'package:fitflow/classes/macronutrients.dart';
 import 'package:fitflow/ui/widgets/text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ class PieChartColors {
 }
 
 class RecipePieChart extends StatefulWidget {
+  MacroNutrients nutrients;
 
-  RecipePieChart({Key? key}) : super(key: key);
+  RecipePieChart({Key? key, required this.nutrients}) : super(key: key);
 
   @override
   State<RecipePieChart> createState() => _RecipePieChartState();
@@ -20,7 +22,8 @@ class RecipePieChart extends StatefulWidget {
 
 class _RecipePieChartState extends State<RecipePieChart> {
 
-  late List<double> values;
+  late List<double> values, toshow;
+  late List<int> percentage;
 
   @override
   void initState() {
@@ -50,23 +53,24 @@ class _RecipePieChartState extends State<RecipePieChart> {
         ),
         Indicator(
           color: PieChartColors.carbohydrates,
-          text: 'Carbo'
+          text: 'Carbo',
+          content_text: "${percentage[0]}%",
         ),
         Indicator(
           color: PieChartColors.protein,
-          text: 'Proteins'
+          text: 'Proteins',
+          content_text: "${percentage[1]}%",
         ),
         Indicator(
           color: PieChartColors.fats,
-          text: 'Fats'
+          text: 'Fats',
+          content_text: "${percentage[2]}%",
         )
       ],
     );
   }
 
   List<PieChartSectionData> showingSections() {
-    double sum = values[0] + values[1] + values[2];
-    List<double> toshow = values.map((v) => v * 100 / sum).toList();
     return List.generate(3, (i) {
       const radius = 6.0;
       switch (i) {
@@ -98,11 +102,19 @@ class _RecipePieChartState extends State<RecipePieChart> {
   }
 
   void _prepare_chart_data() {
-    double cal_c = 48;
-    double cal_p = 23;
-    double cal_f = 19;
+    double cal_c = widget.nutrients.cal_carbohydrates;
+    double cal_p = widget.nutrients.cal_proteins;
+    double cal_f = widget.nutrients.cal_fats;
 
     values = [cal_c, cal_f, cal_p];
+
+    double sum = values.reduce((value, element) => value + element);
+    toshow = values.map((v) => v * 100 / sum).toList();
+    percentage = values.map((v) => v * 100 ~/ sum).toList();
+    int s = percentage.reduce((value, element) => value + element);
+    if (s != 100) {
+      percentage[0] += 100 - s;
+    }
   }
 }
 
@@ -111,11 +123,12 @@ class Indicator extends StatelessWidget {
     super.key,
     required this.color,
     required this.text,
+    required this.content_text,
     this.size = 10,
     this.textColor,
   });
   final Color color;
-  final String text;
+  final String text, content_text;
   final double size;
   final Color? textColor;
 
@@ -132,7 +145,7 @@ class Indicator extends StatelessWidget {
         child: Column(
           children: <Widget>[
             TextTiny(text),
-            TextMedium("56%")
+            TextMedium(content_text)
           ],
         ),
       )

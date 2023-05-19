@@ -1,10 +1,13 @@
+import 'package:fitflow/classes/macronutrients.dart';
 import 'package:fitflow/classes/pouring_config.dart';
 import 'package:fitflow/classes/recipe.dart';
 import 'package:fitflow/classes/step.dart';
 
 final List<Recipe> recipes = [
   Recipe(
-      "Banana Nut", RecipeDifficulty.hard, 350, "1.png",
+      "Banana Nut", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 21.2),
+      "1.png",
       [
         Step("1 scoop chocolate protein powder", "", null),
         Step("1 banana", "", null),
@@ -14,7 +17,9 @@ final List<Recipe> recipes = [
       ]
   ),
   Recipe(
-      "Berry Blast", RecipeDifficulty.hard, 400, "2.png",
+      "Berry Blast", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 26.7),
+      "2.png",
       [
         Step("1 scoop vanilla protein powder", "", null),
         Step("1 cup mixed berries (frozen or fresh)", "", null),
@@ -23,7 +28,9 @@ final List<Recipe> recipes = [
       ]
   ),
   Recipe(
-      "Green Machine", RecipeDifficulty.hard, 350, "3.png",
+      "Green Machine", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 21.2),
+      "3.png",
       [
         Step("1 scoop vanilla protein powder", "", null),
         Step("1 cup spinach", "", null),
@@ -33,7 +40,9 @@ final List<Recipe> recipes = [
       ]
   ),
   Recipe(
-      "Coffee Lover's", RecipeDifficulty.hard, 300, "4.png",
+      "Coffee Lover's", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 15.6),
+      "4.png",
       [
         Step("1 scoop chocolate protein powder", "", null),
         Step("125 ml cold coffee", "", PouringConfig(125, 3)),
@@ -42,7 +51,9 @@ final List<Recipe> recipes = [
       ]
   ),
   Recipe(
-      "Mango Lassi", RecipeDifficulty.hard, 300, "5.png",
+      "Mango Lassi", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 15.6),
+      "5.png",
       [
         Step("1 scoop chocolate protein powder", "", null),
         Step("1/2 cup frozen mango chunks", "", null),
@@ -52,7 +63,9 @@ final List<Recipe> recipes = [
       ]
   ),
   Recipe(
-      "Tropical Paradise", RecipeDifficulty.hard, 350, "6.png",
+      "Tropical Paradise", RecipeDifficulty.hard,
+      MacroNutrients(carbohydrates: 20, proteins: 20, fats: 21.2),
+      "6.png",
       [
         Step("1 scoop chocolate protein powder", "", null),
         Step("1/2 cup pineapple chunks (frozen or fresh)", "", null),
