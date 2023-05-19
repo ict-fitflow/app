@@ -39,7 +39,6 @@ class _RecipePageState extends State<RecipePage> {
           ListView(
             children: [
               Visibility(
-                // TODO: put fadeout
                 visible: _visible,
                 child: Column(
                   children: [

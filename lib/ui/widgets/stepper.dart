@@ -18,6 +18,7 @@ class _StepperWidgetState extends State<StepperWidget> {
   int _index = 0;
   bool _can_continue = false;
   bool _finished = false;
+  bool _show_progress_bar = false;
 
   double _pour_value = 0;
   late BluetoothProvider bluetooth;
@@ -43,7 +44,6 @@ class _StepperWidgetState extends State<StepperWidget> {
         children: [
           Stepper(
             physics: const NeverScrollableScrollPhysics(),
-            margin: EdgeInsets.zero,
             connectorThickness: 2,
             controlsBuilder: _controls_builder,
             currentStep: _index,
@@ -111,7 +111,7 @@ class _StepperWidgetState extends State<StepperWidget> {
     return widget.recipe.steps.map((step) {
       int index = widget.recipe.steps.indexOf(step);
       Widget? content;
-      if (step.pour != null && _can_continue == false) {
+      if (step.pour != null && _show_progress_bar == true) {
         // content = Text("${step.pour!.what} ${step.pour!.quantity}");
         content = LinearProgressIndicator(
           value: _pour_value,
@@ -119,7 +119,6 @@ class _StepperWidgetState extends State<StepperWidget> {
           backgroundColor: Colors.green.withOpacity(0.4),
         );
       }
-      content = null;
       return Step(
         isActive: (index < _index || _finished) ? true : false,
         title: Text(step.name),
@@ -135,6 +134,8 @@ class _StepperWidgetState extends State<StepperWidget> {
   void _step_cancel() {
     if (_index > 0) {
       setState(() {
+        _can_continue = false;
+        _show_progress_bar = false;
         _index -= 1;
       });
     }
@@ -151,9 +152,11 @@ class _StepperWidgetState extends State<StepperWidget> {
       if (_can_continue) {
         _index += 1;
         _can_continue = false;
+        _show_progress_bar = false;
       }
       else {
         _pour_value = 0;
+        _show_progress_bar = true;
         _start_pouring(widget.recipe.steps[_index].pour!);
       }
     });
