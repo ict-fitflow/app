@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fitflow/classes/history.dart';
 import 'package:fitflow/classes/params.dart';
 import 'package:fitflow/classes/user.dart';
@@ -79,13 +81,13 @@ class _UserBarChartState extends State<UserBarChart> {
                               sideTitles: SideTitles(
                                 showTitles: true,
                                 getTitlesWidget: bottomTitles,
-                                reservedSize: 30,
+                                reservedSize: 40,
                               ),
                             ),
                             leftTitles: AxisTitles(
                               sideTitles: SideTitles(
                                 showTitles: true,
-                                reservedSize: 28,
+                                reservedSize: 35,
                                 interval: 1,
                                 getTitlesWidget: leftTitles,
                               ),
@@ -207,9 +209,9 @@ class _UserBarChartState extends State<UserBarChart> {
   }
 
   void _prepare_chart_data() {
-
+    Random rng = Random();
     for (int d = 0; d <= widget.history.weekday; d++) {
-      showingBarGroups.add(makeGroupData(d, downscale(widget.history.week_history[d].calories).toDouble()));
+      showingBarGroups.add(makeGroupData(d, downscale(460.0 + rng.nextInt(400)).toDouble()));
     }
 
     for (int i = showingBarGroups.length; i < 7; i++) {

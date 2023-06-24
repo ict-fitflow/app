@@ -52,7 +52,7 @@ class _StatsTabState extends State<StatsTab> {
             UserPieChart(
               history: history,
             ),
-            space,
+            space, space, space, space,
             Text(
               "History",
               style: Theme.of(context).textTheme.headlineMedium,

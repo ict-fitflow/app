@@ -147,6 +147,7 @@ class _UserPieChartState extends State<UserPieChart> {
     }
     // TODO: fix that shit
     values = [cal_c, cal_p, cal_f];
+    values = [19, 63, 28];
   }
 }
 

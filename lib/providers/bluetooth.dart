@@ -128,7 +128,7 @@ class BluetoothProvider extends ChangeNotifier {
 
   Stream<double> do_pour(PouringConfig config) {
     _pour = PourState(config);
-    String payload = "pour ${config.quantity}";
+    String payload = "p ${config.quantity}";
     _device!.output.add(ascii.encode(payload));
     state = DeviceState.POURING;
     return _pour!.stream;
