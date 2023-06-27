@@ -41,6 +41,7 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
         GlobalSnackbar.showError("Something went wrong");
       },
     );
+    Future.delayed(Duration.zero, () => _showMyDialog(context));
   }
 
   @override
@@ -83,6 +84,44 @@ class _PouringPageState extends State<PouringPage> with TickerProviderStateMixin
           ],
         ),
       )
+    );
+  }
+
+  Future<void> _showMyDialog(BuildContext ctx) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Quick tutorial')
+            ],
+          ),
+          alignment: Alignment.center,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Text('Put the cap on the bottle'),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              Image.asset(
+                "assets/tutorial.gif",
+                height: 250.0,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Done'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
