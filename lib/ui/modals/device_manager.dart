@@ -43,13 +43,14 @@ class _DeviceManagerState extends State<DeviceManager> {
           String address = dev.device.address;
           String text = (name == null) ? address : name;
           if (user.is_paired_device(address)) {
+            if (bluetooth.isConnected && dev.device.address == bluetooth.device_address) continue;
             paired.add(
               ListTile(
                 horizontalTitleGap: 10,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: () => _connect(dev),
                 title: Text(text),
-                leading: (bluetooth.isConnected && bluetooth.device_address == dev.device.address) ? const Icon(Icons.bluetooth_connected) : const Icon(Icons.bluetooth_disabled_outlined),
+                leading: const Icon(Icons.bluetooth_disabled_outlined),
                 minLeadingWidth : 2,
                 dense: true,
                 visualDensity: const VisualDensity(vertical: 0, horizontal: -2)
@@ -70,6 +71,24 @@ class _DeviceManagerState extends State<DeviceManager> {
               )
             );
           }
+        }
+
+        if (bluetooth.isConnected) {
+          String? name = bluetooth.device!.device.name;
+          String address = bluetooth.device!.device.address;
+          String text = (name == null) ? address : name!;
+          paired.add(
+            ListTile(
+                horizontalTitleGap: 10,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                onTap: () => _connect(bluetooth.device!),
+                title: Text(text),
+                leading: const Icon(Icons.bluetooth_connected),
+                minLeadingWidth : 2,
+                dense: true,
+                visualDensity: const VisualDensity(vertical: 0, horizontal: -2)
+            )
+          );
         }
 
         return AlertDialog(
@@ -126,7 +145,7 @@ class _DeviceManagerState extends State<DeviceManager> {
       await bluetooth.disconnect();
     }
     print(bluetooth.isConnected);
-    bool toadd = await bluetooth.connect(device.device.address);
+    bool toadd = await bluetooth.connect(device);
     if (toadd) {
       user.add_bluetooth_device(device.device.address);
     }

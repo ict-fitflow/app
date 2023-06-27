@@ -48,6 +48,7 @@ class BluetoothProvider extends ChangeNotifier {
   String? _address;
   PourState? _pour;
   String? _buffer;
+  BluetoothDiscoveryResult? _device_connected;
 
   late FlutterBluetoothSerial instance;
   StreamSubscription<BluetoothDiscoveryResult>? _streamSubscription;
@@ -91,11 +92,11 @@ class BluetoothProvider extends ChangeNotifier {
     _streamSubscription!.cancel();
   }
 
-  Future<bool> connect(String address) async {
+  Future<bool> connect(BluetoothDiscoveryResult device) async {
     if (_device != null) return false;
     try {
-      _device = await BluetoothConnection.toAddress(address);
-      _address = address;
+      _device = await BluetoothConnection.toAddress(device.device.address);
+      _device_connected = device;
       notifyListeners();
       print('Connected to the device');
 
@@ -168,7 +169,6 @@ class BluetoothProvider extends ChangeNotifier {
               match = match.replaceAll('>', '');
               int val = int.parse(match);
               _pour!.add(val.toDouble());
-
             }
             // print(payload);
           }
@@ -183,5 +183,6 @@ class BluetoothProvider extends ChangeNotifier {
   bool get scanning => _scanning;
   bool get isEnabled => _isEnabled;
   bool get isConnected => (_device != null) ? true : false;
-  String? get device_address => isConnected ? _address : null;
+  String? get device_address => isConnected ? _device_connected!.device.address : null;
+  BluetoothDiscoveryResult? get device => isConnected ? _device_connected : null;
 }
