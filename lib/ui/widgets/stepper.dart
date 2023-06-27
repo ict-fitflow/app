@@ -23,6 +23,8 @@ class _StepperWidgetState extends State<StepperWidget> {
   double _pour_value = 0;
   late BluetoothProvider bluetooth;
 
+  bool _show_commands = true;
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +62,7 @@ class _StepperWidgetState extends State<StepperWidget> {
   void _start_pouring(PouringConfig config) {
 
     Stream<double> pour = bluetooth.do_pour(config);
+    _show_commands = false;
 
     pour.listen(
       (val) {
@@ -69,6 +72,7 @@ class _StepperWidgetState extends State<StepperWidget> {
       },
       onDone: () => setState(() {
         _can_continue = true;
+        _show_commands = true;
       }),
       onError: (error) => print(error),
     );
@@ -85,26 +89,30 @@ class _StepperWidgetState extends State<StepperWidget> {
       btn_continue = "Continue";
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        ElevatedButton(
-          onPressed: details.onStepCancel,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
+    return Visibility(
+      visible: _show_commands,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ElevatedButton(
+            onPressed: details.onStepCancel,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            child: const Text('Cancel'),
           ),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: details.onStepContinue,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green
+          ElevatedButton(
+            onPressed: details.onStepContinue,
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green
+            ),
+            child: Text(btn_continue),
           ),
-          child: Text(btn_continue),
-        ),
-      ],
+        ],
+      )
     );
+
   }
 
   List<Step> _generate_steps() {
