@@ -47,6 +47,7 @@ class BluetoothProvider extends ChangeNotifier {
   DeviceState state = DeviceState.READY;
   String? _address;
   PourState? _pour;
+  String? _buffer;
 
   late FlutterBluetoothSerial instance;
   StreamSubscription<BluetoothDiscoveryResult>? _streamSubscription;
@@ -102,12 +103,14 @@ class BluetoothProvider extends ChangeNotifier {
 
       stream.onDone(() {
         _device = null;
+        _buffer = null;
         notifyListeners();
       });
 
       stream.onError((e) {
         print("error $e");
         _device = null;
+        _buffer = null;
         notifyListeners();
       });
       return true;
@@ -115,6 +118,7 @@ class BluetoothProvider extends ChangeNotifier {
     catch (exception) {
       print('Cannot connect, exception occured');
       _device = null;
+      _buffer = null;
       return false;
     }
   }
@@ -123,12 +127,14 @@ class BluetoothProvider extends ChangeNotifier {
     if (_device == null) return false;
     await _device!.finish();
     notifyListeners();
+    _buffer = null;
     return true;
   }
 
   Stream<double> do_pour(PouringConfig config) {
     _pour = PourState(config);
-    String payload = "p ${config.quantity}";
+    _buffer = "";
+    String payload = "<pour,${config.quantity}>";
     _device!.output.add(ascii.encode(payload));
     state = DeviceState.POURING;
     return _pour!.stream;
@@ -141,14 +147,33 @@ class BluetoothProvider extends ChangeNotifier {
         print("ERRORACCIO");
         break;
       case DeviceState.POURING:
-        if (payload == "STOP") {
+        _buffer = _buffer! + payload;
+        if (_buffer!.contains("<STOP>")) {
+          print("FINISH");
+          _pour!.add(_pour!.config.quantity.toDouble());
           _pour!.finish();
           state = DeviceState.READY;
         }
         else {
-          double val = double.parse(payload);
-          print(val);
-          _pour!.add(val);
+          try {
+            RegExp reg = RegExp(r'<[0-9]+>');
+            RegExpMatch? matches = reg.firstMatch(_buffer!);
+            if (matches == null) {
+              print("Can't find: ${_buffer}");
+            }
+            else {
+              String match = matches[0]!;
+              _buffer = _buffer!.replaceFirst(match, '');
+              match = match.replaceAll('<', '');
+              match = match.replaceAll('>', '');
+              int val = int.parse(match);
+              _pour!.add(val.toDouble());
+
+            }
+            // print(payload);
+          }
+          catch (e) {
+          }
         }
         break;
     }
